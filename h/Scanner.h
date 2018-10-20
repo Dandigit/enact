@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "Matilda.h"
 #include "Token.h"
 
 using std::map;
@@ -14,6 +15,10 @@ using std::vector;
 class Scanner {
     string m_source;
     vector<Token> m_tokens;
+
+    uint32_t m_start;
+    uint32_t m_current;
+    uint32_t m_line;
 
 public:
     Scanner(string source);

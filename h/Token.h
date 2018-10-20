@@ -8,14 +8,14 @@
 using std::string;
 
 class Token {
-    TokenType::TokenType m_type;
+    TokenType m_type;
     string m_lexeme;
     uint32_t m_line;
 
 public:
-    Token(TokenType::TokenType type, string lexeme, uint32_t line);
+    Token(TokenType type, string lexeme, uint32_t line);
 
-    TokenType::TokenType type() const;
+    TokenType type() const;
     string lexeme() const;
     uint32_t line() const;
 

@@ -17,8 +17,8 @@ enum TokenType {
     IDENTIFIER, STRING, NUMBER,
 
     // Reserved words
-    AND, BOOL, CLASS, DUB, ELSE, FALSE, FUN, FOR, IF,
-    INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+    AND, BOOL, CLASS, DUB, ELSE, END, FALSE, FUN, FOR, IF,
+    IN, INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
     // End of file
     ENDFILE,
