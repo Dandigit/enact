@@ -33,8 +33,8 @@ dynamic = "foo"
 int static = 2
 static = "foo" // Error!
 
-fun takeStaticDynamic(int x, y):
+fun takeStaticDynamic(x, int y):
     print x
-    print y
+    print y + 1 // We know that y is an int
 end
 ```
