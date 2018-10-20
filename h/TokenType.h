@@ -1,8 +1,24 @@
-//
-// Created by dan on 20/10/18.
-//
-
 #ifndef MATILDA_TOKENTYPE_H
 #define MATILDA_TOKENTYPE_H
+
+enum class TokenType {
+    // Single character tokens.
+    LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE, RIGHT_SQUARE, COLON,
+    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR
+
+    // 1 or 2 character tokens
+    BANG, BANG_EQUAL,
+    EQUAL, EQUAL_EQUAL,
+    GREATER, GREATER_EQUAL,
+    LESS, LESS_EQUAL,
+
+    // Literals
+    IDENTIFIER, STRING, NUMBER,
+
+    // Reserved words
+    AND, BOOL, CLASS, DUB, ELSE, FALSE, FUN, FOR, IF,
+    INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+
+};
 
 #endif //MATILDA_TOKENTYPE_H

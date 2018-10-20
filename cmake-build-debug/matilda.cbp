@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/dan/Source/Git/matilda/h/Token.h">
+			<Option target="matilda"/>
+		</Unit>
 		<Unit filename="/home/dan/Source/Git/matilda/h/TokenType.h">
 			<Option target="matilda"/>
 		</Unit>
