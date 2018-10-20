@@ -84,10 +84,19 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/dan/Source/Git/matilda/h/Scanner.h">
+			<Option target="matilda"/>
+		</Unit>
 		<Unit filename="/home/dan/Source/Git/matilda/h/Token.h">
 			<Option target="matilda"/>
 		</Unit>
 		<Unit filename="/home/dan/Source/Git/matilda/h/TokenType.h">
+			<Option target="matilda"/>
+		</Unit>
+		<Unit filename="/home/dan/Source/Git/matilda/src/Scanner.cpp">
+			<Option target="matilda"/>
+		</Unit>
+		<Unit filename="/home/dan/Source/Git/matilda/src/Token.cpp">
 			<Option target="matilda"/>
 		</Unit>
 		<Unit filename="/home/dan/Source/Git/matilda/src/main.cpp">

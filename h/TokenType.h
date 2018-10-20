@@ -1,7 +1,8 @@
 #ifndef MATILDA_TOKENTYPE_H
 #define MATILDA_TOKENTYPE_H
 
-enum class TokenType {
+
+enum TokenType {
     // Single character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE, RIGHT_SQUARE, COLON,
     COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR
@@ -19,6 +20,8 @@ enum class TokenType {
     AND, BOOL, CLASS, DUB, ELSE, FALSE, FUN, FOR, IF,
     INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
+    // End of file
+    ENDFILE,
 };
 
 #endif //MATILDA_TOKENTYPE_H

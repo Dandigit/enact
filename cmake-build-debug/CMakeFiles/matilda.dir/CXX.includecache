@@ -6,7 +6,29 @@
 
 #IncludeRegexTransform: 
 
-/home/dan/Source/Git/matilda/src/main.cpp
-iostream
+/home/dan/Source/Git/matilda/h/Scanner.h
+map
 -
+string
+-
+vector
+-
+Token.h
+/home/dan/Source/Git/matilda/h/Token.h
+
+/home/dan/Source/Git/matilda/h/Token.h
+string
+-
+TokenType.h
+/home/dan/Source/Git/matilda/h/TokenType.h
+
+/home/dan/Source/Git/matilda/h/TokenType.h
+
+/home/dan/Source/Git/matilda/src/Scanner.cpp
+../h/Scanner.h
+/home/dan/Source/Git/matilda/h/Scanner.h
+
+/home/dan/Source/Git/matilda/src/Token.cpp
+../h/Token.h
+/home/dan/Source/Git/matilda/h/Token.h
 

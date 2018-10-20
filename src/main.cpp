@@ -22,7 +22,7 @@ namespace Matilda {
 
         // Temporary: just print tokens
         for (const Token token : tokens) {
-            token.print();
+            std::cout << token.toString() << "\n";
         }
     }
 

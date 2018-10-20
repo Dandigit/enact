@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /home/dan/Source/Git/matilda/cmake-build-debug
 CMakeFiles/matilda.dir/all:
 	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/depend
 	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target matilda"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4 "Built target matilda"
 .PHONY : CMakeFiles/matilda.dir/all
 
 # Include target in all.
@@ -81,7 +81,7 @@ all: CMakeFiles/matilda.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/matilda.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/matilda.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/matilda.dir/rule

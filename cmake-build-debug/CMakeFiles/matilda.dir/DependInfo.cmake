@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/dan/Source/Git/matilda/src/Scanner.cpp" "/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/matilda.dir/src/Scanner.cpp.o"
+  "/home/dan/Source/Git/matilda/src/Token.cpp" "/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/matilda.dir/src/Token.cpp.o"
   "/home/dan/Source/Git/matilda/src/main.cpp" "/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/matilda.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

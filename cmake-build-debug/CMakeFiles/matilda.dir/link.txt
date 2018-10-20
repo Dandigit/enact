@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/matilda.dir/src/main.cpp.o  -o matilda 
+/usr/bin/c++  -g   CMakeFiles/matilda.dir/src/main.cpp.o CMakeFiles/matilda.dir/src/Token.cpp.o CMakeFiles/matilda.dir/src/Scanner.cpp.o  -o matilda 

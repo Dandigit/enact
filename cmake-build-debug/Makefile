@@ -123,6 +123,60 @@ matilda/fast:
 	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/build
 .PHONY : matilda/fast
 
+src/Scanner.o: src/Scanner.cpp.o
+
+.PHONY : src/Scanner.o
+
+# target to build an object file
+src/Scanner.cpp.o:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Scanner.cpp.o
+.PHONY : src/Scanner.cpp.o
+
+src/Scanner.i: src/Scanner.cpp.i
+
+.PHONY : src/Scanner.i
+
+# target to preprocess a source file
+src/Scanner.cpp.i:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Scanner.cpp.i
+.PHONY : src/Scanner.cpp.i
+
+src/Scanner.s: src/Scanner.cpp.s
+
+.PHONY : src/Scanner.s
+
+# target to generate assembly for a file
+src/Scanner.cpp.s:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Scanner.cpp.s
+.PHONY : src/Scanner.cpp.s
+
+src/Token.o: src/Token.cpp.o
+
+.PHONY : src/Token.o
+
+# target to build an object file
+src/Token.cpp.o:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Token.cpp.o
+.PHONY : src/Token.cpp.o
+
+src/Token.i: src/Token.cpp.i
+
+.PHONY : src/Token.i
+
+# target to preprocess a source file
+src/Token.cpp.i:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Token.cpp.i
+.PHONY : src/Token.cpp.i
+
+src/Token.s: src/Token.cpp.s
+
+.PHONY : src/Token.s
+
+# target to generate assembly for a file
+src/Token.cpp.s:
+	$(MAKE) -f CMakeFiles/matilda.dir/build.make CMakeFiles/matilda.dir/src/Token.cpp.s
+.PHONY : src/Token.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -159,6 +213,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... matilda"
+	@echo "... src/Scanner.o"
+	@echo "... src/Scanner.i"
+	@echo "... src/Scanner.s"
+	@echo "... src/Token.o"
+	@echo "... src/Token.i"
+	@echo "... src/Token.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
