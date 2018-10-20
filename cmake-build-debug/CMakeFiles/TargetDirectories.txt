@@ -1,0 +1,3 @@
+/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/dan/Source/Git/matilda/cmake-build-debug/CMakeFiles/matilda.dir
