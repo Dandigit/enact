@@ -25,8 +25,6 @@ public:
 
     static bool hadError;
 
-    Matilda() { hadError = false; }
-
     static void run(std::string source);
     static void runFile(std::string path);
     static void runPrompt();

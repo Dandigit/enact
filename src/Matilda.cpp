@@ -1,5 +1,7 @@
 #include "../h/Matilda.h"
 
+bool Matilda::hadError {false};
+
 void Matilda::report(uint32_t line, std::string where, std::string message) {
     std::cerr << "[line " << line << "] Error " << where << ": " << message << "\n";
     hadError = true;

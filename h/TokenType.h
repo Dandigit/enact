@@ -25,7 +25,7 @@ enum TokenType {
     ENDFILE,
 };
 
-std::string toString(TokenType type) {
+inline std::string toString(TokenType type) {
     switch (type) {
         case LEFT_PAREN: return "LEFT_PAREN";
         case RIGHT_PAREN: return "RIGHT_PAREN";
