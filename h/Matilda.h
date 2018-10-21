@@ -9,9 +9,6 @@
 #include "Token.h"
 #include "Scanner.h"
 
-using std::ifstream;
-using std::vector;
-
 enum class ExitCode {
     INVALID_ARGUMENTS = 65,
     FILE_ERROR = 70,

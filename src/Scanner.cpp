@@ -3,7 +3,7 @@
 Scanner::Scanner(std::string source) :
     m_source { source } {}
 
-vector<Token> Scanner::scanTokens() {
+std::vector<Token> Scanner::scanTokens() {
     while (!isAtEnd()) {
         // We're at the beginning of the next lexeme
         m_start = m_current;
@@ -69,7 +69,10 @@ void Scanner::scanToken() {
             if (isDigit(c)) {
                 number();
             } else {
-                Matilda::error(m_line, "Unexpected character '" + std::to_string(c) + "'.");
+                std::string errorMessage {"Unexpected character '"};
+                errorMessage += c;
+                errorMessage += "'.";
+                Matilda::error(m_line, errorMessage);
                 break;
             }
     }

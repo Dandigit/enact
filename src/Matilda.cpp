@@ -9,7 +9,7 @@ void Matilda::report(uint32_t line, std::string where, std::string message) {
 
 void Matilda::run(std::string source) {
     Scanner scanner{source};
-    vector<Token> tokens = scanner.scanTokens();
+    std::vector<Token> tokens = scanner.scanTokens();
 
     // Temporary: just print tokens
     for (const Token token : tokens) {
@@ -19,7 +19,7 @@ void Matilda::run(std::string source) {
 
 void Matilda::runFile(std::string path) {
     // Get the file contents.
-    ifstream file{path};
+    std::ifstream file{path};
 
     // Check that the file opened successfully
     if (!file.is_open()) {

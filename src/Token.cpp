@@ -9,8 +9,8 @@ uint32_t Token::line() const { return m_line; }
 std::string Token::literal() const { return m_literal; };
 
 std::string Token::toString() const {
-    return "token: (\n    type: " + ::toString(m_type) +
-        "\n    lexeme: " + m_lexeme +
-        "\n    line: " + std::to_string(m_line) +
-        "\n    literal: " + m_literal + "\n)";
+    return "type: " + ::toString(m_type) +
+        "\nlexeme: " + m_lexeme +
+        "\nline: " + std::to_string(m_line) +
+        "\nliteral: " + m_literal + "\n";
 }
