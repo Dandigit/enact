@@ -4,25 +4,22 @@
 #include <string>
 
 #include "TokenType.h"
-#include "Object.h"
 
-using std::string;
-
-class Token : public Object {
+class Token {
     TokenType m_type;
-    string m_lexeme;
+    std::string m_lexeme;
     uint32_t m_line;
-    Object m_literal;
+    std::string m_literal;
 
 public:
-    Token(TokenType type, string lexeme, uint32_t line, Object literal);
+    Token(TokenType type, std::string lexeme, uint32_t line, std::string literal);
 
     TokenType type() const;
-    string lexeme() const;
+    std::string lexeme() const;
     uint32_t line() const;
-    Object literal() const;
+    std::string literal() const;
 
-    string toString() const;
+    std::string toString() const;
 };
 
 #endif //MATILDA_TOKEN_H

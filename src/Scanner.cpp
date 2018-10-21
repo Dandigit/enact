@@ -1,6 +1,6 @@
 #include "../h/Scanner.h"
 
-Scanner::Scanner(::string source) :
+Scanner::Scanner(std::string source) :
     m_source { source } {}
 
 vector<Token> Scanner::scanTokens() {
@@ -10,7 +10,7 @@ vector<Token> Scanner::scanTokens() {
         scanToken();
     }
 
-    m_tokens.push_back(Token{ ENDFILE, "", m_line });
+    m_tokens.push_back(Token{ ENDFILE, "", m_line, "" });
     return m_tokens;
 }
 
@@ -66,8 +66,12 @@ void Scanner::scanToken() {
 
         // Not allowed
         default:
-            Matilda::error(m_line, "Unexpected character '" + std::to_string(c) + "'.");
-            break;
+            if (isDigit(c)) {
+                number();
+            } else {
+                Matilda::error(m_line, "Unexpected character '" + std::to_string(c) + "'.");
+                break;
+            }
     }
 }
 
@@ -84,7 +88,18 @@ void Scanner::identifier() {
 }
 
 void Scanner::number() {
+    while (isDigit(peek())) advance();
 
+    // Look for a fractional part.
+    if (peek() == '.' && isDigit(peekNext())) {
+        // Eat the '.'
+        advance();
+
+        while (isDigit(peek())) advance();
+    }
+
+    addToken(NUMBER,
+            m_source.substr(m_start, m_current));
 }
 
 void Scanner::string() {
@@ -103,9 +118,8 @@ void Scanner::string() {
     advance();
 
     // Trim the quotes
-    ::string value {m_source.substr(m_start + 1, m_current - 1)};
-    Object literal = value;
-    addToken(STRING, literal);
+    std::string value {m_source.substr(m_start + 1, m_current - 1)};
+    addToken(STRING, value);
 }
 
 bool Scanner::match(char expected) {
@@ -121,6 +135,15 @@ char Scanner::peek() const {
     return m_source.at(m_current);
 }
 
+char Scanner::peekNext() const {
+    if (m_current + 1 >= m_source.length()) return '\0';
+    return m_source.at(m_current + 1);
+}
+
+bool Scanner::isDigit(char c) const {
+    return c >= '0' && c <= '9';
+}
+
 bool Scanner::isAtEnd() const {
     return m_current >= m_source.length();
 }
@@ -130,11 +153,10 @@ char Scanner::advance() {
 }
 
 void Scanner::addToken(TokenType type) {
-    Object literal = 0;
-    addToken(type, literal);
+    addToken(type, "");
 }
 
-void Scanner::addToken(TokenType type, Object literal) {
-    ::string lexeme = m_source.substr(m_start, m_current);
+void Scanner::addToken(TokenType type, std::string literal) {
+    std::string lexeme = m_source.substr(m_start, m_current);
     m_tokens.push_back(Token{type, lexeme, m_line, literal});
 }

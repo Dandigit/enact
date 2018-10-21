@@ -1,11 +1,11 @@
 #include "../h/Matilda.h"
 
-void Matilda::report(uint32_t line, string where, string message) {
+void Matilda::report(uint32_t line, std::string where, std::string message) {
     std::cerr << "[line " << line << "] Error " << where << ": " << message << "\n";
     hadError = true;
 }
 
-void Matilda::run(string source) {
+void Matilda::run(std::string source) {
     Scanner scanner{source};
     vector<Token> tokens = scanner.scanTokens();
 
@@ -15,7 +15,7 @@ void Matilda::run(string source) {
     }
 }
 
-void Matilda::runFile(string path) {
+void Matilda::runFile(std::string path) {
     // Get the file contents.
     ifstream file{path};
 
@@ -25,8 +25,8 @@ void Matilda::runFile(string path) {
         std::exit((int) ExitCode::FILE_ERROR);
     }
 
-    string fileContents{""};
-    string currentLine{""};
+    std::string fileContents{""};
+    std::string currentLine{""};
 
     while (std::getline(std::cin, currentLine)) {
         fileContents += currentLine;
@@ -41,7 +41,7 @@ void Matilda::runPrompt() {
     while (true) {
         std::cout << "matilda > ";
 
-        string input{""};
+        std::string input{""};
         std::getline(std::cin, input);
 
         run(input + "\n");
@@ -49,7 +49,7 @@ void Matilda::runPrompt() {
     }
 }
 
-void Matilda::error(uint32_t line, string message) {
+void Matilda::error(uint32_t line, std::string message) {
     report(line, "", message);
 }
 
