@@ -1,6 +1,6 @@
 #include "../h/Scanner.h"
 
-Scanner::Scanner(string source) :
+Scanner::Scanner(::string source) :
     m_source { source } {}
 
 vector<Token> Scanner::scanTokens() {
@@ -103,7 +103,9 @@ void Scanner::string() {
     advance();
 
     // Trim the quotes
-    ::string value {source.substr(m_start + 1, m_current - 1)};
+    ::string value {m_source.substr(m_start + 1, m_current - 1)};
+    Object literal = value;
+    addToken(STRING, literal);
 }
 
 bool Scanner::match(char expected) {
@@ -128,6 +130,11 @@ char Scanner::advance() {
 }
 
 void Scanner::addToken(TokenType type) {
-    string lexeme = m_source.substr(m_start, m_current);
-    m_tokens.push_back(Token{type, lexeme, m_line});
+    Object literal = 0;
+    addToken(type, literal);
+}
+
+void Scanner::addToken(TokenType type, Object literal) {
+    ::string lexeme = m_source.substr(m_start, m_current);
+    m_tokens.push_back(Token{type, lexeme, m_line, literal});
 }

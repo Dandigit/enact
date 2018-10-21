@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "Object.h"
+
 using std::ifstream;
 using std::string;
 using std::vector;
@@ -16,7 +18,7 @@ enum class ExitCode {
     STATIC_ERROR = 75,
 };
 
-class Matilda {
+class Matilda : public Object {
     static void report(uint32_t line, string where, string message);
 
 public:

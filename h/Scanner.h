@@ -7,12 +7,13 @@
 
 #include "Matilda.h"
 #include "Token.h"
+#include "Object.h"
 
 using std::map;
 using std::string;
 using std::vector;
 
-class Scanner {
+class Scanner : public Object {
     string m_source;
     vector<Token> m_tokens;
 
@@ -42,6 +43,7 @@ class Scanner {
     bool isAtEnd() const;
     char advance();
     void addToken(TokenType type);
+    void addToken(TokenType type, Object literal);
 
 public:
     Scanner(::string source);

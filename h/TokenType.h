@@ -1,7 +1,6 @@
 #ifndef MATILDA_TOKENTYPE_H
 #define MATILDA_TOKENTYPE_H
 
-
 enum TokenType {
     // Single character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_SQUARE, RIGHT_SQUARE, COLON,
