@@ -1,7 +1,7 @@
 #include "../h/Scanner.h"
 
 Scanner::Scanner(string source) :
-    m_source { source }, m_start {0}, m_current {0}, m_line{1} {}
+    m_source { source } {}
 
 vector<Token> Scanner::scanTokens() {
     while (!isAtEnd()) {
@@ -14,14 +14,14 @@ vector<Token> Scanner::scanTokens() {
     return m_tokens;
 }
 
-void Scanner::scanTokens() {
+void Scanner::scanToken() {
     char c = advance();
     switch (c) {
         // Single character tokens
-        case '(': addToken(LEFT_PAREN); break;
-        case ')': addToken(RIGHT_PAREN); break;
-        case '[': addToken(LEFT_SQUARE); break;
-        case ']': addToken(RIGHT_SQUARE); break;
+        case '(': addToken(LEFT_PAREN); ++m_openParen; break;
+        case ')': addToken(RIGHT_PAREN); --m_openParen; break;
+        case '[': addToken(LEFT_SQUARE); ++m_openParen; break;
+        case ']': addToken(RIGHT_SQUARE); --m_openParen; break;
         case ':': addToken(COLON); break;
         case ',': addToken(COMMA); break;
         case '.': addToken(DOT); break;
@@ -29,6 +29,7 @@ void Scanner::scanTokens() {
         case '+': addToken(PLUS); break;
         case ';': addToken(SEMICOLON); break;
         case '*': addToken(STAR); break;
+        case '?': addToken(QUESTION); break;
 
         // One or two characters
         case '!': addToken(match('=') ? BANG_EQUAL : BANG); break;
@@ -36,20 +37,73 @@ void Scanner::scanTokens() {
         case '<': addToken(match('=') ? LESS_EQUAL : LESS); break;
         case '>': addToken(match('=') ? GREATER_EQUAL : GREATER); break;
 
+        // Handle comments or slash
+        case '/':
+            // Single line comment
+            if (match('/')) {
+                while (peek() != '\n' && !isAtEnd()) advance();
+            // Block comment
+            } else if (match('*')) {
+                blockComment();
+            // Plain ol' slash
+            } else {
+                addToken(SLASH);
+            }
+            break;
+
+        // Ignore whitespace
+        case ' ':
+        case '\r':
+        case '\t':
+            break;
+
+        case '\n':
+            ++m_line;
+            optionalSemicolon();
+            break;
+
+        case '"': string(); break;
+
         // Not allowed
-        case '~':
-        case '@':
-        case '#':
-        case '$':
-        case '^':
-        case '&':
-        case '{':
-        case '}':
-        case '|':
-        case '`':
-            Matilda::error(m_line, "Unexpected character '" + c + "'.");
+        default:
+            Matilda::error(m_line, "Unexpected character '" + std::to_string(c) + "'.");
             break;
     }
+}
+
+void Scanner::optionalSemicolon() {
+
+}
+
+void Scanner::blockComment() {
+
+}
+
+void Scanner::identifier() {
+
+}
+
+void Scanner::number() {
+
+}
+
+void Scanner::string() {
+    while (peek() != '"' && !isAtEnd()) {
+        if (peek() == '\n') ++m_line;
+        advance();
+    }
+
+    // Unterminated string.
+    if (isAtEnd()) {
+        Matilda::error(m_line, "Unterminated string.");
+        return;
+    }
+
+    // Close quote.
+    advance();
+
+    // Trim the quotes
+    ::string value {source.substr(m_start + 1, m_current - 1)};
 }
 
 bool Scanner::match(char expected) {
@@ -58,6 +112,11 @@ bool Scanner::match(char expected) {
 
     ++m_current;
     return true;
+}
+
+char Scanner::peek() const {
+    if (isAtEnd()) return '\0';
+    return m_source.at(m_current);
 }
 
 bool Scanner::isAtEnd() const {

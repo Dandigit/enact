@@ -3,4 +3,4 @@ project(matilda)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(matilda src/Matilda.cpp h/TokenType.h src/Token.cpp h/Token.h src/Scanner.cpp h/Scanner.h h/Matilda.h)
+add_executable(matilda src/Matilda.cpp h/TokenType.h src/Token.cpp h/Token.h src/Scanner.cpp h/Scanner.h h/Matilda.h src/Object.cpp h/Object.h)
