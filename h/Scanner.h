@@ -18,6 +18,8 @@ class Scanner {
 
     int m_openParen = 0;
 
+    static std::map<std::string, TokenType> m_keywords;
+
     void scanToken();
 
     void blockComment();

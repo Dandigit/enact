@@ -18,8 +18,8 @@ enum TokenType {
     IDENTIFIER, STRING, NUMBER,
 
     // Reserved words
-    AND, BOOL, CLASS, DUB, ELSE, END, FALSE, FUN, FOR, IF,
-    INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+    AND, BOOL, CLASS, CONST, DUB, ELSE, END, FALSE, FUN, FOR,
+    IF, INT, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
     // End of file
     ENDFILE,
@@ -54,6 +54,7 @@ inline std::string toString(TokenType type) {
         case AND: return "AND";
         case BOOL: return "BOOL";
         case CLASS: return "CLASS";
+        case CONST: return "CONST";
         case DUB: return "DUB";
         case ELSE: return "ELSE";
         case END: return "END";

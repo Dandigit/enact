@@ -1,13 +1,37 @@
 #include "../h/Scanner.h"
 
+std::map<std::string, TokenType> Scanner::m_keywords = {
+        {"and",     AND},
+        {"bool",    BOOL},
+        {"class",   CLASS},
+        {"const",   CONST},
+        {"dub",     DUB},
+        {"else",    ELSE},
+        {"end",     END},
+        {"false",   FALSE},
+        {"fun",     FUN},
+        {"for",     FOR},
+        {"if",      IF},
+        {"int",     INT},
+        {"nil",     NIL},
+        {"or",      OR},
+        {"return",  RETURN},
+        {"super",   SUPER},
+        {"this",    THIS},
+        {"true",    TRUE},
+        {"var",     VAR},
+        {"while",   WHILE}
+};
+
+
 Scanner::Scanner(std::string source) :
     m_source { source } {}
 
 std::vector<Token> Scanner::scanTokens() {
     while (!isAtEnd()) {
         // We're at the beginning of the next lexeme
-        m_start = m_current;
         scanToken();
+        m_start = m_current;
     }
 
     m_tokens.push_back(Token{ ENDFILE, "", m_line, "" });
@@ -68,6 +92,8 @@ void Scanner::scanToken() {
         default:
             if (isDigit(c)) {
                 number();
+            } else if (isAlpha(c)) {
+                identifier();
             } else {
                 std::string errorMessage {"Unexpected character '"};
                 errorMessage += c;
@@ -87,7 +113,18 @@ void Scanner::blockComment() {
 }
 
 void Scanner::identifier() {
+    while (isAlphaNumeric(peek())) advance();
 
+    std::string text {m_source.substr(m_start, m_current - m_start)};
+    // Default to IDENTIFIER, if we don't match a keyword, we know that this token is an identifier.
+    TokenType type {IDENTIFIER};
+
+    // Check if the matched word is a keyword
+    if (m_keywords.count(text) != 0) {
+        type = m_keywords[text];
+    }
+
+    addToken(type);
 }
 
 void Scanner::number() {
@@ -102,11 +139,14 @@ void Scanner::number() {
     }
 
     addToken(NUMBER,
-            m_source.substr(m_start, m_current));
+            m_source.substr(m_start, m_current - m_start));
 }
 
 void Scanner::string() {
+    std::string value = "";
+
     while (peek() != '"' && !isAtEnd()) {
+        value += peek();
         if (peek() == '\n') ++m_line;
         advance();
     }
@@ -120,14 +160,12 @@ void Scanner::string() {
     // Close quote.
     advance();
 
-    // Trim the quotes
-    std::string value {m_source.substr(m_start + 1, m_current - 1)};
     addToken(STRING, value);
 }
 
 bool Scanner::match(char expected) {
     if (isAtEnd()) return false;
-    if (m_source.at(m_current) != expected) return false;
+    if (m_source[m_current] != expected) return false;
 
     ++m_current;
     return true;
@@ -135,16 +173,26 @@ bool Scanner::match(char expected) {
 
 char Scanner::peek() const {
     if (isAtEnd()) return '\0';
-    return m_source.at(m_current);
+    return m_source[m_current];
 }
 
 char Scanner::peekNext() const {
     if (m_current + 1 >= m_source.length()) return '\0';
-    return m_source.at(m_current + 1);
+    return m_source[m_current + 1];
 }
 
 bool Scanner::isDigit(char c) const {
     return c >= '0' && c <= '9';
+}
+
+bool Scanner::isAlpha(char c) const {
+    return (c >= 'a' && c <= 'z') ||
+            (c >= 'A' && c <= 'Z') ||
+            c == '_';
+}
+
+bool Scanner::isAlphaNumeric(char c) const {
+    return isAlpha(c) || isDigit(c);
 }
 
 bool Scanner::isAtEnd() const {
@@ -152,7 +200,7 @@ bool Scanner::isAtEnd() const {
 }
 
 char Scanner::advance() {
-    return m_source.at(m_current++);
+    return m_source[m_current++];
 }
 
 void Scanner::addToken(TokenType type) {
@@ -160,6 +208,6 @@ void Scanner::addToken(TokenType type) {
 }
 
 void Scanner::addToken(TokenType type, std::string literal) {
-    std::string lexeme = m_source.substr(m_start, m_current);
+    std::string lexeme = m_source.substr(m_start, m_current - m_start);
     m_tokens.push_back(Token{type, lexeme, m_line, literal});
 }
