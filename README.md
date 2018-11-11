@@ -6,19 +6,19 @@ established technologies and paradigms and just makes them **nicer**.
 This is a very trivial example, but it displays Matilda's philosophy quite well. Take a simple matching function.
 **Python**:
 ```
-def matchWith(x, y):
+def equals(x, y):
     return x == y
 
-matchWith(2, 2) # true
+equals(2, 2) # true
 ```
 
 **Matilda**:
 ```
-fun match (x) with (y):
+fun (x) equals (y):
     return x == y
 end
 
-match 2 with 2 // true
+2 equals 2 // true
 ```
 
 Matilda has taken traditional syntax (function calls), but has made it infinitely nicer.
