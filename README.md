@@ -38,8 +38,3 @@ fun takeStaticDynamic(x, int y):
     print y + 1 // We know that y is an int
 end
 ```
-
-## About the implementation
-The current implementation of Matilda is written in C++. Some parts are heavily based off of the Java code in Crafting 
-Interpreters, but others are completely different. I intend to eventually transition this to a bytecode JIT/fallback interpreter, 
-but as of now I'm still working on the initial implementation.
