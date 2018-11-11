@@ -1,4 +1,14 @@
-#include "../h/Matilda.h"
+#include <csignal>
+#include <fstream>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "h/Chunk.h"
+#include "h/Matilda.h"
+#include "h/Scanner.h"
+#include "h/VM.h"
 
 bool Matilda::hadError {false};
 
@@ -9,11 +19,13 @@ void Matilda::report(uint32_t line, std::string where, std::string message) {
 
 void Matilda::run(std::string source) {
     Scanner scanner{source};
-    std::vector<Token> tokens = scanner.scanTokens();
-
-    // Temporary: just print tokens
-    for (const Token token : tokens) {
-        std::cout << token.toString() << "\n";
+    Token currentToken;
+    while (currentToken.type != TokenType::ENDFILE) {
+        currentToken = scanner.scanToken();
+        std::cout << "Token: " << (int)currentToken.type << " "
+        << currentToken.lexeme << " "
+        << currentToken.line << ":"
+        << currentToken.col << "\n";
     }
 }
 

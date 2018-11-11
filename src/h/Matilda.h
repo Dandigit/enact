@@ -1,13 +1,11 @@
-#ifndef MATILDA_MATILDA_H
-#define MATILDA_MATILDA_H
+//
+// Created by dan on 11/11/18.
+//
 
-#include <fstream>
-#include <iostream>
+#ifndef GVM_MATILDA_H
+#define GVM_MATILDA_H
+
 #include <string>
-#include <vector>
-
-#include "Token.h"
-#include "Scanner.h"
 
 enum class ExitCode {
     INVALID_ARGUMENTS = 65,
@@ -16,10 +14,9 @@ enum class ExitCode {
 };
 
 class Matilda {
+private:
     static void report(uint32_t line, std::string where, std::string message);
-
 public:
-
     static bool hadError;
 
     static void run(std::string source);
@@ -31,4 +28,4 @@ public:
 
 int main(int argc, char *argv[]);
 
-#endif //MATILDA_MATILDA_H
+#endif //GVM_MATILDA_H

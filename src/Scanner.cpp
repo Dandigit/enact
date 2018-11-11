@@ -1,213 +1,176 @@
-#include "../h/Scanner.h"
+#include "h/Scanner.h"
+#include "h/Matilda.h"
 
-std::map<std::string, TokenType> Scanner::m_keywords = {
-        {"and",     AND},
-        {"bool",    BOOL},
-        {"class",   CLASS},
-        {"const",   CONST},
-        {"dub",     DUB},
-        {"else",    ELSE},
-        {"end",     END},
-        {"false",   FALSE},
-        {"fun",     FUN},
-        {"for",     FOR},
-        {"if",      IF},
-        {"int",     INT},
-        {"nil",     NIL},
-        {"or",      OR},
-        {"return",  RETURN},
-        {"super",   SUPER},
-        {"this",    THIS},
-        {"true",    TRUE},
-        {"var",     VAR},
-        {"while",   WHILE}
-};
+Scanner::Scanner(std::string source) : m_source{std::move(source)} {}
 
+Token Scanner::scanToken() {
+    skipWhitespace();
+    m_start = m_current;
 
-Scanner::Scanner(std::string source) :
-    m_source { source } {}
+    if (isAtEnd()) return makeToken(TokenType::ENDFILE);
 
-std::vector<Token> Scanner::scanTokens() {
-    while (!isAtEnd()) {
-        // We're at the beginning of the next lexeme
-        scanToken();
-        m_start = m_current;
-    }
-
-    m_tokens.push_back(Token{ ENDFILE, "", m_line, "" });
-    return m_tokens;
-}
-
-void Scanner::scanToken() {
     char c = advance();
+
+    if (isDigit(c)) return number();
+    if (isIdentifierStart(c)) return identifier();
+
     switch (c) {
-        // Single character tokens
-        case '(': addToken(LEFT_PAREN); ++m_openParen; break;
-        case ')': addToken(RIGHT_PAREN); --m_openParen; break;
-        case '[': addToken(LEFT_SQUARE); ++m_openParen; break;
-        case ']': addToken(RIGHT_SQUARE); --m_openParen; break;
-        case ':': addToken(COLON); break;
-        case ',': addToken(COMMA); break;
-        case '.': addToken(DOT); break;
-        case '-': addToken(MINUS); break;
-        case '+': addToken(PLUS); break;
-        case ';': addToken(SEMICOLON); break;
-        case '*': addToken(STAR); break;
-        case '?': addToken(QUESTION); break;
+        // Single character tokens.
+        case '(': return makeToken(TokenType::LEFT_PAREN);
+        case ')': return makeToken(TokenType::RIGHT_PAREN);
+        case '[': return makeToken(TokenType::LEFT_SQUARE);
+        case ']': return makeToken(TokenType::RIGHT_SQUARE);
+        case ':': return makeToken(TokenType::COLON);
+        case ',': return makeToken(TokenType::COMMA);
+        case '.': return makeToken(TokenType::DOT);
+        case '-': return makeToken(TokenType::MINUS);
+        case '+': return makeToken(TokenType::PLUS);
+        case '?': return makeToken(TokenType::QUESTION);
+        case ';': return makeToken(TokenType::SEMICOLON);
+        case '/': return makeToken(TokenType::SLASH);
+        case '*': return makeToken(TokenType::STAR);
 
-        // One or two characters
-        case '!': addToken(match('=') ? BANG_EQUAL : BANG); break;
-        case '=': addToken(match('=') ? EQUAL_EQUAL : EQUAL); break;
-        case '<': addToken(match('=') ? LESS_EQUAL : LESS); break;
-        case '>': addToken(match('=') ? GREATER_EQUAL : GREATER); break;
+        // 1 or 2 character tokens.
+        case '!':
+            return makeToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+        case '=':
+            return makeToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+        case '>':
+            return makeToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+        case '<':
+            return makeToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
 
-        // Handle comments or slash
-        case '/':
-            // Single line comment
-            if (match('/')) {
-                while (peek() != '\n' && !isAtEnd()) advance();
-            // Block comment
-            } else if (match('*')) {
-                blockComment();
-            // Plain ol' slash
-            } else {
-                addToken(SLASH);
-            }
-            break;
+        case '"':
+            return string();
+    }
 
-        // Ignore whitespace
-        case ' ':
-        case '\r':
-        case '\t':
-            break;
+    return errorToken("Unrecognized character '" + std::to_string(c) + "'.");
+}
 
-        case '\n':
-            ++m_line;
-            optionalSemicolon();
-            break;
-
-        case '"': string(); break;
-
-        // Not allowed
-        default:
-            if (isDigit(c)) {
-                number();
-            } else if (isAlpha(c)) {
-                identifier();
-            } else {
-                std::string errorMessage {"Unexpected character '"};
-                errorMessage += c;
-                errorMessage += "'.";
-                Matilda::error(m_line, errorMessage);
+void Scanner::skipWhitespace() {
+    while (true) {
+        char c = peek();
+        switch (c) {
+            case ' ':
+            case '\t':
+            case '\r':
+                advance();
                 break;
-            }
+
+            case '\n':
+                ++m_line;
+                advance();
+                break;
+
+            case '/':
+                if (peekNext() == '/') {
+                    while (peek() != '\n' && !isAtEnd()) advance();
+                } else {
+                    return;
+                }
+
+            default:
+                return;
+        }
     }
 }
 
-void Scanner::optionalSemicolon() {
-
-}
-
-void Scanner::blockComment() {
-
-}
-
-void Scanner::identifier() {
-    while (isAlphaNumeric(peek())) advance();
-
-    std::string text {m_source.substr(m_start, m_current - m_start)};
-    // Default to IDENTIFIER, if we don't match a keyword, we know that this token is an identifier.
-    TokenType type {IDENTIFIER};
-
-    // Check if the matched word is a keyword
-    if (m_keywords.count(text) != 0) {
-        type = m_keywords[text];
-    }
-
-    addToken(type);
-}
-
-void Scanner::number() {
+Token Scanner::number() {
     while (isDigit(peek())) advance();
 
-    // Look for a fractional part.
-    if (peek() == '.' && isDigit(peekNext())) {
-        // Eat the '.'
+    if (peek() == '.') {
         advance();
-
         while (isDigit(peek())) advance();
     }
 
-    addToken(NUMBER,
-            m_source.substr(m_start, m_current - m_start));
+    return makeToken(TokenType::NUMBER);
 }
 
-void Scanner::string() {
-    std::string value = "";
+Token Scanner::identifier() {
+    while (isIdentifier(peek())) advance();
+    return makeToken(identifierType(m_source.substr(m_start, m_current - m_start)));
+}
 
-    while (peek() != '"' && !isAtEnd()) {
-        value += peek();
-        if (peek() == '\n') ++m_line;
-        advance();
-    }
+Token Scanner::string() {
+    while (peek() != '"' && !isAtEnd()) advance();
 
-    // Unterminated string.
     if (isAtEnd()) {
-        Matilda::error(m_line, "Unterminated string.");
-        return;
+        return errorToken("Unterminated string.");
     }
 
-    // Close quote.
+    // Eat the close quote.
     advance();
 
-    addToken(STRING, value);
+    return makeToken(TokenType::STRING);
 }
 
-bool Scanner::match(char expected) {
-    if (isAtEnd()) return false;
-    if (m_source[m_current] != expected) return false;
-
-    ++m_current;
-    return true;
+Token Scanner::makeToken(TokenType type) {
+    std::string lexeme{m_source.substr(m_start, m_current - m_start)};
+    return Token{type, lexeme, m_line, m_col};
 }
 
-char Scanner::peek() const {
-    if (isAtEnd()) return '\0';
+Token Scanner::errorToken(const std::string &what) {
+    return Token{TokenType::ERROR, what, m_line, m_col};
+}
+
+TokenType Scanner::identifierType(std::string candidate) {
+    if (candidate == "and") return TokenType::AND;
+    if (candidate == "bool") return TokenType::BOOL;
+    if (candidate == "class") return TokenType::CLASS;
+    if (candidate == "const") return TokenType::CONST;
+    if (candidate == "else") return TokenType::ELSE;
+    if (candidate == "end") return TokenType::END;
+    if (candidate == "false") return TokenType::FALSE;
+    if (candidate == "fun") return TokenType::FUN;
+    if (candidate == "for") return TokenType::FOR;
+    if (candidate == "if") return TokenType::IF;
+    if (candidate == "nil") return TokenType::NIL;
+    if (candidate == "or") return TokenType::OR;
+    if (candidate == "return") return TokenType::RETURN;
+    if (candidate == "super") return TokenType::SUPER;
+    if (candidate == "this") return TokenType::THIS;
+    if (candidate == "true") return TokenType::TRUE;
+    if (candidate == "var") return TokenType::VAR;
+    if (candidate == "while") return TokenType::WHILE;
+
+    return TokenType::IDENTIFIER;
+}
+
+bool Scanner::isAtEnd() {
+    return m_current >= m_source.length();
+}
+
+char Scanner::advance() {
+    ++m_col;
+    return m_source[m_current++];
+}
+
+char Scanner::peek() {
     return m_source[m_current];
 }
 
-char Scanner::peekNext() const {
-    if (m_current + 1 >= m_source.length()) return '\0';
+char Scanner::peekNext() {
     return m_source[m_current + 1];
 }
 
-bool Scanner::isDigit(char c) const {
+bool Scanner::match(char expected) {
+    if (peek() == expected) {
+        advance();
+        return true;
+    }
+    return false;
+}
+
+bool Scanner::isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
-bool Scanner::isAlpha(char c) const {
+bool Scanner::isIdentifierStart(char c) {
     return (c >= 'a' && c <= 'z') ||
             (c >= 'A' && c <= 'Z') ||
             c == '_';
 }
 
-bool Scanner::isAlphaNumeric(char c) const {
-    return isAlpha(c) || isDigit(c);
-}
-
-bool Scanner::isAtEnd() const {
-    return m_current >= m_source.length();
-}
-
-char Scanner::advance() {
-    return m_source[m_current++];
-}
-
-void Scanner::addToken(TokenType type) {
-    addToken(type, "");
-}
-
-void Scanner::addToken(TokenType type, std::string literal) {
-    std::string lexeme = m_source.substr(m_start, m_current - m_start);
-    m_tokens.push_back(Token{type, lexeme, m_line, literal});
+bool Scanner::isIdentifier(char c) {
+    return isIdentifierStart(c) || isDigit(c);
 }
