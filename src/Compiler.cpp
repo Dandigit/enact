@@ -83,13 +83,12 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
         std::cerr << " at end:";
     } else {
         std::cerr << " at '" << token.lexeme << "':\n";
-        const std::string sourceLine = m_scanner.getSourceLine(token.line);
-        std::cerr << sourceLine << "\n";
+        std::cerr << "    " << m_scanner.getSourceLine(token.line) << "\n";
         for (int i = 1; i < token.col; ++i) {
             std::cerr << " ";
         }
-        std::cerr << "^\n";
-        std::cerr << message << "\n";
+        std::cerr << "    ^\n";
+        std::cerr << message << "\n\n";
     }
 }
 

@@ -140,10 +140,10 @@ TokenType Scanner::identifierType(std::string candidate) {
 
 std::string Scanner::getSourceLine(line_t line) {
     std::istringstream source{m_source};
-    line_t lineNumber{0};
+    line_t lineNumber{1};
     std::string lineContents;
 
-    while (std::getline(source, lineContents) && lineNumber != line) {
+    while (std::getline(source, lineContents) && lineNumber < line) {
         ++lineNumber;
     }
 
