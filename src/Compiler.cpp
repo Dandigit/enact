@@ -1,0 +1,134 @@
+#include "h/Compiler.h"
+#include "h/Token.h"
+#include "h/Chunk.h"
+
+Compiler::Compiler(std::string source) : m_source{std::move(source)}, m_scanner{m_source} {}
+
+const ParseRule& Compiler::getParseRule(TokenType type) {
+    return m_parseRules[(size_t)type];
+}
+
+Chunk& Compiler::currentChunk() {
+    return m_compilingChunk;
+}
+
+void Compiler::parsePrecedence(Precedence precedence) {
+    advance();
+    ParseFn prefixRule = getParseRule(m_previous.type).prefix;
+    if (prefixRule == nullptr) {
+        error("Expected expression.");
+        return;
+    }
+
+    (this->*(prefixRule))();
+
+    while (precedence <= getParseRule(m_current.type).precedence) {
+        advance();
+        ParseFn infixRule = getParseRule(m_previous.type).infix;
+        (this->*(infixRule))();
+    }
+}
+
+void Compiler::expression() {
+    parsePrecedence(Precedence::ASSIGNMENT);
+}
+
+void Compiler::grouping() {
+    expression();
+    consume(TokenType::ENDFILE, "Expected ')' after expression.");
+}
+
+void Compiler::number() {
+    double value = std::stod(m_previous.lexeme);
+    emitConstant(value);
+}
+
+void Compiler::unary() {
+    TokenType operatorType = m_previous.type;
+
+    parsePrecedence(Precedence::UNARY);
+
+    switch (operatorType) {
+        case TokenType::MINUS: emitByte(OpCode::NEGATE); break;
+    }
+}
+
+void Compiler::binary() {
+    TokenType operatorType = m_previous.type;
+
+    const ParseRule &rule = getParseRule(operatorType);
+    parsePrecedence(rule.precedence);
+
+    switch (operatorType) {
+        case TokenType::PLUS: emitByte(OpCode::ADD); break;
+        case TokenType::MINUS: emitByte(OpCode::SUBTRACT); break;
+        case TokenType::STAR: emitByte(OpCode::MULTIPLY); break;
+        case TokenType::SLASH: emitByte(OpCode::DIVIDE); break;
+    }
+}
+
+void Compiler::compile() {
+    advance();
+    expression();
+    consume(TokenType::ENDFILE, "Expected end of expression.");
+    emitByte(OpCode::RETURN);
+
+    std::cout << currentChunk().disassemble();
+}
+
+void Compiler::errorAt(const Token &token, const std::string &message) {
+    std::cerr << "[line " << token.line << "] Error";
+
+    if (token.type == TokenType::ENDFILE) {
+        std::cerr << " at end:";
+    } else {
+        std::cerr << " at '" << token.lexeme << "':\n";
+        const std::string sourceLine = m_scanner.getSourceLine(token.line);
+        std::cerr << sourceLine << "\n";
+        for (int i = 1; i < token.col; ++i) {
+            std::cerr << " ";
+        }
+        std::cerr << "^\n";
+        std::cerr << message << "\n";
+    }
+}
+
+void Compiler::errorAtCurrent(const std::string &message) {
+    errorAt(m_current, message);
+}
+
+void Compiler::error(const std::string &message) {
+    errorAt(m_previous, message);
+}
+
+void Compiler::advance() {
+    m_previous = m_current;
+
+    while (true) {
+        m_current = m_scanner.scanToken();
+        if (m_current.type != TokenType::ERROR) break;
+
+        errorAtCurrent(m_current.lexeme);
+    }
+}
+
+void Compiler::consume(TokenType type, const std::string &message) {
+    if (m_current.type == type) {
+        advance();
+    } else {
+        errorAtCurrent(message);
+    }
+}
+
+void Compiler::emitByte(uint8_t byte) {
+    currentChunk().write(byte, m_previous.line);
+}
+
+void Compiler::emitBytes(uint8_t byte1, uint8_t byte2) {
+    emitByte(byte1);
+    emitByte(byte2);
+}
+
+void Compiler::emitConstant(double value) {
+    currentChunk().writeConstant(value, m_previous.line);
+}

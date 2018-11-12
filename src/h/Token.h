@@ -29,7 +29,7 @@ enum class TokenType {
     AND, BOOL, CLASS, CONST, ELSE, END, FALSE, FUN, FOR,
     IF, NIL, OR, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
-    ERROR, ENDFILE,
+    ERROR, ENDFILE, MAX_TOKEN_TYPES,
 };
 
 struct Token {

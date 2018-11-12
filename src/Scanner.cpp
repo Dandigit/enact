@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "h/Scanner.h"
 #include "h/Matilda.h"
 
@@ -134,6 +136,18 @@ TokenType Scanner::identifierType(std::string candidate) {
     if (candidate == "while") return TokenType::WHILE;
 
     return TokenType::IDENTIFIER;
+}
+
+std::string Scanner::getSourceLine(line_t line) {
+    std::istringstream source{m_source};
+    line_t lineNumber{0};
+    std::string lineContents;
+
+    while (std::getline(source, lineContents) && lineNumber != line) {
+        ++lineNumber;
+    }
+
+    return lineContents;
 }
 
 bool Scanner::isAtEnd() {

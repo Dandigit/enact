@@ -14,15 +14,12 @@ enum class ExitCode {
 };
 
 class Matilda {
-private:
-    static void report(uint32_t line, std::string where, std::string message);
 public:
     static bool hadError;
 
     static void run(std::string source);
     static void runFile(std::string path);
     static void runPrompt();
-    static void error(uint32_t line, std::string message);
     static void start(int argc, char *argv[]);
 };
 

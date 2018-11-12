@@ -41,6 +41,8 @@ public:
     Scanner(std::string source);
     ~Scanner() = default;
 
+    std::string getSourceLine(line_t line);
+
     Token scanToken();
 
 

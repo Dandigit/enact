@@ -6,27 +6,18 @@
 #include <vector>
 
 #include "h/Chunk.h"
+#include "h/Compiler.h"
 #include "h/Matilda.h"
-#include "h/Scanner.h"
 #include "h/VM.h"
 
 bool Matilda::hadError {false};
 
-void Matilda::report(uint32_t line, std::string where, std::string message) {
-    std::cerr << "[line " << line << "] Error " << where << ": " << message << "\n";
-    hadError = true;
-}
-
 void Matilda::run(std::string source) {
-    Scanner scanner{source};
-    Token currentToken;
-    while (currentToken.type != TokenType::ENDFILE) {
-        currentToken = scanner.scanToken();
-        std::cout << "Token: " << (int)currentToken.type << " "
-        << currentToken.lexeme << " "
-        << currentToken.line << ":"
-        << currentToken.col << "\n";
-    }
+    Compiler compiler{source};
+    compiler.compile();
+    compiler.currentChunk().disassemble();
+    VM vm{compiler.currentChunk()};
+    vm.run();
 }
 
 void Matilda::runFile(std::string path) {
@@ -61,10 +52,6 @@ void Matilda::runPrompt() {
         run(input + "\n");
         hadError = false;
     }
-}
-
-void Matilda::error(uint32_t line, std::string message) {
-    report(line, "", message);
 }
 
 void Matilda::start(int argc, char *argv[]) {
