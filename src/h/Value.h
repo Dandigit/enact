@@ -23,14 +23,6 @@ public:
 
     bool operator==(Value value);
 
-    friend std::ostream& operator << (std::ostream &stream, Value value) {
-        if (value.isBool()) std::cout << (value.asBool() ? "true" : "false");
-        else if (value.isNil()) std::cout << "nil";
-        else if (value.isNumber()) std::cout << value.asNumber();
-
-        return stream;
-    }
-
     bool isBool() const;
     bool isNil() const;
     bool isNumber() const;
@@ -41,5 +33,13 @@ public:
     bool isFalsey() const;
     bool isTruthy() const;
 };
+
+inline std::ostream& operator<<(std::ostream &stream, const Value &value) {
+    if (value.isBool()) stream << (value.asBool() ? "true" : "false");
+    else if (value.isNil()) stream << "nil";
+    else if (value.isNumber()) stream << value.asNumber();
+
+    return stream;
+}
 
 #endif //MATILDA_VALUE_H

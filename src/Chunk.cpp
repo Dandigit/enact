@@ -63,7 +63,7 @@ DisassembledChunk Chunk::disassembleInstruction(index_t index) const {
         case OpCode::CONSTANT:
             ++index;
             stream << "CONSTANT        "
-                   << m_values[((int)m_code[index])] << " '" << (int)(m_code[index]) << "'";
+                   << (int)(m_code[index]) << " '" << m_values[((int)m_code[index])] << "'";
             break;
         case OpCode::CONSTANT_LONG: {
             uint32_t valueIndex = m_code[index + 1] |
@@ -71,15 +71,23 @@ DisassembledChunk Chunk::disassembleInstruction(index_t index) const {
                     (m_code[index + 3] << 16);
             index += 3;
             stream << "CONSTANT_LONG   "
-                        << m_values[(int)valueIndex] << " '" << (int)valueIndex << "'";
+                        << (int)valueIndex << " '" << m_values[(int)valueIndex] << "'";
             break;
         }
+
+        case OpCode::TRUE: stream << "TRUE"; break;
+        case OpCode::FALSE: stream << "FALSE"; break;
+        case OpCode::NIL: stream << "NIL"; break;
+        case OpCode::EQUAL: stream << "EQUAL"; break;
+        case OpCode::GREATER: stream << "GREATER"; break;
+        case OpCode::LESS: stream << "LESS"; break;
         case OpCode::ADD: stream << "ADD"; break;
         case OpCode::SUBTRACT: stream << "SUBTRACT"; break;
         case OpCode::MULTIPLY: stream << "MULTIPLY"; break;
         case OpCode::DIVIDE: stream << "DIVIDE"; break;
         case OpCode::MODULUS: stream << "MODULUS"; break;
         case OpCode::NEGATE: stream << "NEGATE"; break;
+        case OpCode::NOT: stream << "NOT"; break;
         case OpCode::RETURN: stream << "RETURN"; break;
     }
 
@@ -97,6 +105,7 @@ std::string Chunk::disassemble() const {
         i = result.offset;
     }
 
+    std::string s = chunkString.str();
     return chunkString.str();
 }
 
