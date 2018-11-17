@@ -12,8 +12,8 @@
 
 InterpretResult Matilda::run(const std::string &source) {
     Compiler compiler{source};
-    std::cout << compiler.currentChunk().disassemble();
     if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
+    std::cout << compiler.currentChunk().disassemble();
 
     VM vm{compiler.currentChunk()};
     return vm.run();

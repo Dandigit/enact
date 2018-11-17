@@ -32,3 +32,11 @@ bool Value::asBool() const {
 double Value::asNumber() const {
     return m_as.number;
 }
+
+bool Value::isFalsey() const {
+    return isNil() || (isBool() && !asBool());
+}
+
+bool Value::isTruthy() const {
+    return !isFalsey();
+}

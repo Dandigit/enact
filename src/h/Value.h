@@ -37,6 +37,9 @@ public:
 
     bool asBool() const;
     double asNumber() const;
+
+    bool isFalsey() const;
+    bool isTruthy() const;
 };
 
 #endif //MATILDA_VALUE_H

@@ -46,6 +46,7 @@ InterpretResult VM::run() {
                 Value b = pop();
                 Value a = pop();
                 push(Value{a == b});
+                break;
             }
             case OpCode::GREATER: BINARY_OP(>); break;
             case OpCode::LESS: BINARY_OP(<); break;
@@ -54,6 +55,10 @@ InterpretResult VM::run() {
             case OpCode::MULTIPLY: BINARY_OP(*); break;
             case OpCode::DIVIDE: BINARY_OP(/); break;
             case OpCode::MODULUS: {
+                if (!peek(0).isNumber() || !peek(1).isNumber()) { \
+                    runtimeError("Operands must be numbers.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
                 double b = pop().asNumber();
                 double a = pop().asNumber();
                 push(Value{(double)((int)a % (int)b)});
@@ -67,11 +72,7 @@ InterpretResult VM::run() {
                 push(Value{-pop().asNumber()});
                 break;
             case OpCode::NOT:
-                if (!peek(0).isBool()) {
-                    runtimeError("Operand must be a boolean.");
-                    return InterpretResult::RUNTIME_ERROR;
-                }
-                push(Value{!pop().asBool()});
+                push(Value{pop().isFalsey()});
                 break;
             case OpCode::RETURN:
                 return InterpretResult::OK;
