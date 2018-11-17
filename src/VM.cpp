@@ -10,22 +10,20 @@ VM::VM(const Chunk &chunk) : m_chunk { chunk }, m_stackTop{ 0 }, m_ip{ chunk.cod
     m_stack.resize(chunk.code().size() * MAX_PUSHES_PER_INSTRUCTION);
 }
 
-void checkNumberOperands(double a, double b) {
-    if (false) {
-
-    }
-}
-
 InterpretResult VM::run() {
 #define BINARY_OP(op) \
     do { \
-        checkNumberOperands(peek(0), peek(1)); \
-        double b = pop(); \
-        double a = pop(); \
-        push(a op b); \
+        if (!peek(0).isNumber() || !peek(1).isNumber()) { \
+            runtimeError("Operands must be numbers."); \
+            return InterpretResult::RUNTIME_ERROR; \
+        } \
+        double b = pop().asNumber(); \
+        double a = pop().asNumber(); \
+        push(Value{a op b}); \
     } while (false)
 
     for (int i = 0; i < m_ip.size(); ++i) {
+        m_currentInstruction = i;
 #ifdef DEBUG_TRACE_EXECUTION
         std::cout << "    ";
         for (int stackIndex = 0; stackIndex < m_stackTop; ++stackIndex) {
@@ -41,18 +39,40 @@ InterpretResult VM::run() {
                 push(m_values[unshiftBytes(m_ip[i + 1], m_ip[i + 2], m_ip[i + 3])]);
                 i += 3;
                 break;
+            case OpCode::TRUE: push(Value{true}); break;
+            case OpCode::FALSE: push(Value{false}); break;
+            case OpCode::NIL: push(Value{}); break;
+            case OpCode::EQUAL: {
+                Value b = pop();
+                Value a = pop();
+                push(Value{a == b});
+                break;
+            }
+            case OpCode::GREATER: BINARY_OP(>); break;
+            case OpCode::LESS: BINARY_OP(<); break;
             case OpCode::ADD: BINARY_OP(+); break;
             case OpCode::SUBTRACT: BINARY_OP(-); break;
             case OpCode::MULTIPLY: BINARY_OP(*); break;
             case OpCode::DIVIDE: BINARY_OP(/); break;
             case OpCode::MODULUS: {
-                double b = pop();
-                double a = pop();
-                push((double)((int)a % (int)b));
+                if (!peek(0).isNumber() || !peek(1).isNumber()) { \
+                    runtimeError("Operands must be numbers.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                double b = pop().asNumber();
+                double a = pop().asNumber();
+                push(Value{(double)((int)a % (int)b)});
                 break;
             }
             case OpCode::NEGATE:
-                push(-pop());
+                if (!peek(0).isNumber()) {
+                    runtimeError("Operand must be a number.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                push(Value{-pop().asNumber()});
+                break;
+            case OpCode::NOT:
+                push(Value{pop().isFalsey()});
                 break;
             case OpCode::RETURN:
                 return InterpretResult::OK;
@@ -62,14 +82,18 @@ InterpretResult VM::run() {
 #undef BINARY_OP
 }
 
-void VM::push(double value) {
+void VM::runtimeError(const std::string &message) {
+    std::cout << message << "\n[line " << m_chunk.getLine(m_currentInstruction) << "]\n";
+}
+
+void VM::push(Value value) {
     m_stack[m_stackTop++] = value;
 }
 
-double VM::pop() {
+Value VM::pop() {
     return m_stack[--m_stackTop];
 }
 
-double VM::peek(int distance) const {
+Value VM::peek(int distance) const {
     return m_stack[m_stackTop - 1 - distance];
 }

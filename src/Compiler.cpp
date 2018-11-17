@@ -40,7 +40,16 @@ void Compiler::grouping() {
 
 void Compiler::number() {
     double value = std::stod(m_previous.lexeme);
-    emitConstant(value);
+    emitConstant(Value{value});
+}
+
+void Compiler::literal() {
+    switch (m_previous.type) {
+        case TokenType::TRUE: emitByte(OpCode::TRUE); break;
+        case TokenType::FALSE: emitByte(OpCode::FALSE); break;
+        case TokenType::NIL: emitByte(OpCode::NIL); break;
+        default: break; // Unreachable
+    }
 }
 
 void Compiler::unary() {
@@ -49,6 +58,7 @@ void Compiler::unary() {
     parsePrecedence(Precedence::UNARY);
 
     switch (operatorType) {
+        case TokenType::BANG: emitByte(OpCode::NOT); break;
         case TokenType::MINUS: emitByte(OpCode::NEGATE); break;
     }
 }
@@ -60,6 +70,12 @@ void Compiler::binary() {
     parsePrecedence(rule.precedence);
 
     switch (operatorType) {
+        case TokenType::EQUAL_EQUAL: emitByte(OpCode::EQUAL); break;
+        case TokenType::BANG_EQUAL: emitBytes(OpCode::EQUAL, OpCode::NOT); break;
+        case TokenType::LESS: emitByte(OpCode::LESS); break;
+        case TokenType::LESS_EQUAL: emitBytes(OpCode::GREATER, OpCode::NOT); break;
+        case TokenType::GREATER: emitByte(OpCode::GREATER); break;
+        case TokenType::GREATER_EQUAL: emitBytes(OpCode::LESS, OpCode::NOT); break;
         case TokenType::PLUS: emitByte(OpCode::ADD); break;
         case TokenType::MINUS: emitByte(OpCode::SUBTRACT); break;
         case TokenType::STAR: emitByte(OpCode::MULTIPLY); break;
@@ -67,13 +83,13 @@ void Compiler::binary() {
     }
 }
 
-void Compiler::compile() {
+bool Compiler::compile() {
     advance();
     expression();
     consume(TokenType::ENDFILE, "Expected end of expression.");
     emitByte(OpCode::RETURN);
 
-    std::cout << currentChunk().disassemble();
+    return !m_hadError;
 }
 
 void Compiler::errorAt(const Token &token, const std::string &message) {
@@ -83,14 +99,15 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
         std::cerr << " at end:";
     } else {
         std::cerr << " at '" << token.lexeme << "':\n";
-        const std::string sourceLine = m_scanner.getSourceLine(token.line);
-        std::cerr << sourceLine << "\n";
+        std::cerr << "    " << m_scanner.getSourceLine(token.line) << "\n";
         for (int i = 1; i < token.col; ++i) {
             std::cerr << " ";
         }
-        std::cerr << "^\n";
-        std::cerr << message << "\n";
+        std::cerr << "    ^\n";
+        std::cerr << message << "\n\n";
     }
+
+    m_hadError = true;
 }
 
 void Compiler::errorAtCurrent(const std::string &message) {
@@ -129,6 +146,6 @@ void Compiler::emitBytes(uint8_t byte1, uint8_t byte2) {
     emitByte(byte2);
 }
 
-void Compiler::emitConstant(double value) {
+void Compiler::emitConstant(Value value) {
     currentChunk().writeConstant(value, m_previous.line);
 }
