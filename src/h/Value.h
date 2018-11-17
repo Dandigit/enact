@@ -25,7 +25,7 @@ public:
     Value& operator = (double number);
 
     friend std::ostream& operator << (std::ostream &stream, Value value) {
-        if (value.isBool()) std::cout << value.asBool();
+        if (value.isBool()) std::cout << (value.asBool() ? "true" : "false");
         else if (value.isNil()) std::cout << "nil";
         else if (value.isNumber()) std::cout << value.asNumber();
 

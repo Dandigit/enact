@@ -26,7 +26,7 @@ void Matilda::runFile(const std::string &path) {
     // Check that the file opened successfully
     if (!file.is_open()) {
         std::cerr << "Error: Unable to read file '" + path + "'.";
-        std::exit((int) ExitCode::FILE_ERROR);
+        std::exit((int)ExitCode::FILE_ERROR);
     }
 
     std::string fileContents;

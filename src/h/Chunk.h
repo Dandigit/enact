@@ -19,6 +19,9 @@ namespace OpCode {
     enum OpCode {
         CONSTANT,
         CONSTANT_LONG,
+        TRUE,
+        FALSE,
+        NIL,
         ADD,
         SUBTRACT,
         MULTIPLY,

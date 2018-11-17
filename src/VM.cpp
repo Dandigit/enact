@@ -39,6 +39,9 @@ InterpretResult VM::run() {
                 push(m_values[unshiftBytes(m_ip[i + 1], m_ip[i + 2], m_ip[i + 3])]);
                 i += 3;
                 break;
+            case OpCode::TRUE: push(Value{true}); break;
+            case OpCode::FALSE: push(Value{false}); break;
+            case OpCode::NIL: push(Value{}); break;
             case OpCode::ADD: BINARY_OP(+); break;
             case OpCode::SUBTRACT: BINARY_OP(-); break;
             case OpCode::MULTIPLY: BINARY_OP(*); break;

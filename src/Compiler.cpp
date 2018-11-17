@@ -43,6 +43,15 @@ void Compiler::number() {
     emitConstant(Value{value});
 }
 
+void Compiler::literal() {
+    switch (m_previous.type) {
+        case TokenType::TRUE: emitByte(OpCode::TRUE); break;
+        case TokenType::FALSE: emitByte(OpCode::FALSE); break;
+        case TokenType::NIL: emitByte(OpCode::NIL); break;
+        default: break; // Unreachable
+    }
+}
+
 void Compiler::unary() {
     TokenType operatorType = m_previous.type;
 
