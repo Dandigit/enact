@@ -82,14 +82,14 @@ private:
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // SEMICOLON
             ParseRule{nullptr,             &Compiler::binary, Precedence::FACTOR}, // SLASH
             ParseRule{nullptr,             &Compiler::binary, Precedence::FACTOR}, // STAR
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // BANG
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // BANG_EQUAL
+            ParseRule{&Compiler::unary,    nullptr,           Precedence::UNARY}, // BANG
+            ParseRule{nullptr,             &Compiler::binary, Precedence::EQUALITY}, // BANG_EQUAL
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // EQUAL
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // EQUAL_EQUAL
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // GREATER
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // GREATER_EQUAL
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // LESS
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // LESS_EQUAL
+            ParseRule{nullptr,             &Compiler::binary, Precedence::EQUALITY}, // EQUAL_EQUAL
+            ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // GREATER
+            ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // GREATER_EQUAL
+            ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // LESS
+            ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // LESS_EQUAL
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // IDENTIFIER
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // STRING
             ParseRule{&Compiler::number,   nullptr,           Precedence::NONE}, // NUMBER

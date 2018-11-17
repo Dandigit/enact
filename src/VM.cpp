@@ -42,6 +42,13 @@ InterpretResult VM::run() {
             case OpCode::TRUE: push(Value{true}); break;
             case OpCode::FALSE: push(Value{false}); break;
             case OpCode::NIL: push(Value{}); break;
+            case OpCode::EQUAL: {
+                Value b = pop();
+                Value a = pop();
+                push(Value{a == b});
+            }
+            case OpCode::GREATER: BINARY_OP(>); break;
+            case OpCode::LESS: BINARY_OP(<); break;
             case OpCode::ADD: BINARY_OP(+); break;
             case OpCode::SUBTRACT: BINARY_OP(-); break;
             case OpCode::MULTIPLY: BINARY_OP(*); break;
@@ -53,7 +60,18 @@ InterpretResult VM::run() {
                 break;
             }
             case OpCode::NEGATE:
+                if (!peek(0).isNumber()) {
+                    runtimeError("Operand must be a number.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
                 push(Value{-pop().asNumber()});
+                break;
+            case OpCode::NOT:
+                if (!peek(0).isBool()) {
+                    runtimeError("Operand must be a boolean.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                push(Value{!pop().asBool()});
                 break;
             case OpCode::RETURN:
                 return InterpretResult::OK;

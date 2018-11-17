@@ -21,8 +21,7 @@ public:
     explicit Value(bool boolean);
     explicit Value(double number);
 
-    Value& operator = (bool boolean);
-    Value& operator = (double number);
+    bool operator==(Value value);
 
     friend std::ostream& operator << (std::ostream &stream, Value value) {
         if (value.isBool()) std::cout << (value.asBool() ? "true" : "false");

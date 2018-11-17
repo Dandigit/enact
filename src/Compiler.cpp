@@ -58,6 +58,7 @@ void Compiler::unary() {
     parsePrecedence(Precedence::UNARY);
 
     switch (operatorType) {
+        case TokenType::BANG: emitByte(OpCode::NOT); break;
         case TokenType::MINUS: emitByte(OpCode::NEGATE); break;
     }
 }
@@ -69,6 +70,12 @@ void Compiler::binary() {
     parsePrecedence(rule.precedence);
 
     switch (operatorType) {
+        case TokenType::EQUAL_EQUAL: emitByte(OpCode::EQUAL); break;
+        case TokenType::BANG_EQUAL: emitBytes(OpCode::EQUAL, OpCode::NOT); break;
+        case TokenType::LESS: emitByte(OpCode::LESS); break;
+        case TokenType::LESS_EQUAL: emitBytes(OpCode::GREATER, OpCode::NOT); break;
+        case TokenType::GREATER: emitByte(OpCode::GREATER); break;
+        case TokenType::GREATER_EQUAL: emitBytes(OpCode::LESS, OpCode::NOT); break;
         case TokenType::PLUS: emitByte(OpCode::ADD); break;
         case TokenType::MINUS: emitByte(OpCode::SUBTRACT); break;
         case TokenType::STAR: emitByte(OpCode::MULTIPLY); break;

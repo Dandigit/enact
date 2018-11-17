@@ -22,12 +22,16 @@ namespace OpCode {
         TRUE,
         FALSE,
         NIL,
+        EQUAL,
+        GREATER,
+        LESS,
         ADD,
         SUBTRACT,
         MULTIPLY,
         DIVIDE,
         MODULUS,
         NEGATE,
+        NOT,
         RETURN,
     };
 }
