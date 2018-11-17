@@ -39,6 +39,9 @@ private:
     Chunk m_compilingChunk;
     Scanner m_scanner;
 
+    bool m_hadError = false;
+    bool m_panicMode = false;
+
     Token m_previous;
     Token m_current;
 
@@ -47,7 +50,7 @@ private:
 
     void emitByte(uint8_t byte);
     void emitBytes(uint8_t byte1, uint8_t byte2);
-    void emitConstant(double value);
+    void emitConstant(Value value);
 
     void errorAt(const Token &token, const std::string &message);
     void errorAtCurrent(const std::string &message);
@@ -113,7 +116,7 @@ private:
 
 public:
     Compiler(std::string source);
-    void compile();
+    bool compile();
     Chunk& currentChunk();
 };
 

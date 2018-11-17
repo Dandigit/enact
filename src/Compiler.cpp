@@ -40,7 +40,7 @@ void Compiler::grouping() {
 
 void Compiler::number() {
     double value = std::stod(m_previous.lexeme);
-    emitConstant(value);
+    emitConstant(Value{value});
 }
 
 void Compiler::unary() {
@@ -67,13 +67,13 @@ void Compiler::binary() {
     }
 }
 
-void Compiler::compile() {
+bool Compiler::compile() {
     advance();
     expression();
     consume(TokenType::ENDFILE, "Expected end of expression.");
     emitByte(OpCode::RETURN);
 
-    std::cout << currentChunk().disassemble();
+    return !m_hadError;
 }
 
 void Compiler::errorAt(const Token &token, const std::string &message) {
@@ -90,6 +90,8 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
         std::cerr << "    ^\n";
         std::cerr << message << "\n\n";
     }
+
+    m_hadError = true;
 }
 
 void Compiler::errorAtCurrent(const std::string &message) {
@@ -128,6 +130,6 @@ void Compiler::emitBytes(uint8_t byte1, uint8_t byte2) {
     emitByte(byte2);
 }
 
-void Compiler::emitConstant(double value) {
+void Compiler::emitConstant(Value value) {
     currentChunk().writeConstant(value, m_previous.line);
 }

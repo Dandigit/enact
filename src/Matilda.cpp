@@ -10,17 +10,16 @@
 #include "h/Matilda.h"
 #include "h/VM.h"
 
-bool Matilda::hadError {false};
-
-void Matilda::run(std::string source) {
+InterpretResult Matilda::run(const std::string &source) {
     Compiler compiler{source};
-    compiler.compile();
-    compiler.currentChunk().disassemble();
+    std::cout << compiler.currentChunk().disassemble();
+    if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
+
     VM vm{compiler.currentChunk()};
-    vm.run();
+    return vm.run();
 }
 
-void Matilda::runFile(std::string path) {
+void Matilda::runFile(const std::string &path) {
     // Get the file contents.
     std::ifstream file{path};
 
@@ -30,27 +29,27 @@ void Matilda::runFile(std::string path) {
         std::exit((int) ExitCode::FILE_ERROR);
     }
 
-    std::string fileContents{""};
-    std::string currentLine{""};
+    std::string fileContents;
+    std::string currentLine;
 
     while (std::getline(std::cin, currentLine)) {
         fileContents += currentLine;
     }
 
-    run(fileContents);
+    InterpretResult result = run(fileContents);
 
-    if (hadError) std::exit((int)ExitCode::STATIC_ERROR);
+    if (result == InterpretResult::COMPILE_ERROR) exit((int)ExitCode::COMPILE_ERROR);
+    if (result == InterpretResult::RUNTIME_ERROR) exit((int)ExitCode::RUNTIME_ERROR);
 }
 
 void Matilda::runPrompt() {
     while (true) {
         std::cout << "matilda > ";
 
-        std::string input{""};
+        std::string input;
         std::getline(std::cin, input);
 
         run(input + "\n");
-        hadError = false;
     }
 }
 

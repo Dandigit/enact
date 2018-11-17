@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "common.h"
+#include "Value.h"
 
 typedef std::pair<index_t, line_t> indexLine_t;
 
@@ -36,21 +37,21 @@ struct DisassembledChunk {
 class Chunk {
 private:
     std::vector<uint8_t> m_code;
-    std::vector<double> m_values;
+    std::vector<Value> m_values;
 
     std::unordered_map<index_t, line_t> m_lines;
     line_t m_lastLine = 0;
 
-    index_t addConstant(double value);
+    index_t addConstant(Value value);
 
 public:
     Chunk() = default;
 
     void write(uint8_t byte, line_t line);
-    void writeConstant(double value, line_t line);
+    void writeConstant(Value value, line_t line);
 
     const std::vector<uint8_t>& code() const;
-    const std::vector<double>& values() const;
+    const std::vector<Value>& values() const;
 
     line_t getLine(index_t index) const;
 

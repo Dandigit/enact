@@ -3,11 +3,9 @@
 
 #include "h/Chunk.h"
 
-
-
 // private =>
 
-index_t Chunk::addConstant(double value) {
+index_t Chunk::addConstant(Value value) {
     m_values.push_back(value);
     return m_values.size() - 1;
 }
@@ -24,7 +22,7 @@ void Chunk::write(uint8_t byte, line_t line) {
     m_code.push_back(byte);
 }
 
-void Chunk::writeConstant(double value, line_t line) {
+void Chunk::writeConstant(Value value, line_t line) {
     index_t valueIndex = addConstant(value);
 
     if (valueIndex < 256) {
@@ -103,7 +101,7 @@ std::string Chunk::disassemble() const {
 }
 
 const std::vector<uint8_t>& Chunk::code() const { return m_code; }
-const std::vector<double>& Chunk::values() const { return m_values; }
+const std::vector<Value>& Chunk::values() const { return m_values; }
 
 // <= public
 
