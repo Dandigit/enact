@@ -46,7 +46,10 @@ Token Scanner::scanToken() {
             return string();
     }
 
-    return errorToken("Unrecognized character '" + std::to_string(c) + "'.");
+    std::string errorMessage = "Unrecognized character '";
+    errorMessage.append(std::string{c});
+    errorMessage.append("'.");
+    return errorToken(errorMessage);
 }
 
 void Scanner::skipWhitespace() {
@@ -67,6 +70,7 @@ void Scanner::skipWhitespace() {
             case '/':
                 if (peekNext() == '/') {
                     while (peek() != '\n' && !isAtEnd()) advance();
+                    match('\n');
                 } else {
                     return;
                 }

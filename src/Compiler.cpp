@@ -91,8 +91,8 @@ void Compiler::binary() {
 bool Compiler::compile() {
     advance();
     expression();
-    consume(TokenType::ENDFILE, "Expected end of expression.");
     emitByte(OpCode::RETURN);
+    consume(TokenType::ENDFILE, "Expected end of expression.");
 
     return !m_hadError;
 }
@@ -103,7 +103,12 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
     if (token.type == TokenType::ENDFILE) {
         std::cerr << " at end: " << message << "\n\n";
     } else {
-        std::cerr << " at '" << token.lexeme << "':\n";
+        if (token.type == TokenType::ERROR) {
+            std::cerr << ":\n";
+        } else {
+            std::cerr << " at '" << token.lexeme << "':\n";
+        }
+
         std::cerr << "    " << m_scanner.getSourceLine(token.line) << "\n";
         for (int i = 1; i < token.col; ++i) {
             std::cerr << " ";
