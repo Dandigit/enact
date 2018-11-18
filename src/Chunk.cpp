@@ -86,6 +86,7 @@ DisassembledChunk Chunk::disassembleInstruction(index_t index) const {
         case OpCode::MULTIPLY: stream << "MULTIPLY"; break;
         case OpCode::DIVIDE: stream << "DIVIDE"; break;
         case OpCode::MODULUS: stream << "MODULUS"; break;
+        case OpCode::CONDITIONAL: stream << "CONDITIONAL"; break;
         case OpCode::NEGATE: stream << "NEGATE"; break;
         case OpCode::NOT: stream << "NOT"; break;
         case OpCode::RETURN: stream << "RETURN"; break;
