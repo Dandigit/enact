@@ -33,6 +33,7 @@ public:
     void runtimeError(const std::string &message);
 
     InterpretResult run();
+    void sweep();
 
     // Stack operations
     void push(Value value);

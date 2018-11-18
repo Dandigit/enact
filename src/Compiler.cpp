@@ -54,6 +54,13 @@ void Compiler::literal() {
 
 void Compiler::string() {
     StringObject *object = new StringObject{m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2)};
+    if (m_last) {
+        m_last->next = object;
+        m_last = object;
+    } else {
+        m_last = object;
+        objects = m_last;
+    }
     emitConstant(Value{object});
 }
 

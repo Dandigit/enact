@@ -1,6 +1,7 @@
 #ifndef MATILDA_OBJECT_H
 #define MATILDA_OBJECT_H
 
+#include <iostream>
 #include <string>
 
 enum class ObjectType {
@@ -11,9 +12,11 @@ class StringObject;
 
 class Object {
 private:
-    ObjectType type;
-    Object *next;
+    ObjectType m_type;
 public:
+    explicit Object(ObjectType type);
+    Object *next = nullptr;
+
     bool operator==(Object &object);
 
     bool isString() const;
@@ -29,8 +32,10 @@ private:
 public:
     explicit StringObject(std::string value);
 
-    StringObject operator+(const StringObject &object) const;
+    StringObject operator+(StringObject &object) const;
     const std::string& asStdString() const;
 };
+
+extern Object *objects;
 
 #endif //MATILDA_OBJECT_H

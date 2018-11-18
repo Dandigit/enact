@@ -1,15 +1,19 @@
 #include "h/Object.h"
 
+Object *objects = nullptr;
+
+Object::Object(ObjectType type) : m_type{type} {};
+
 bool Object::operator==(Object &object) {
-    if (this->type != object.type) return false;
-    switch (this->type) {
+    if (this->m_type != object.m_type) return false;
+    switch (this->m_type) {
         case ObjectType::STRING:
             return this->asString()->asStdString() == object.asString()->asStdString();
     }
 }
 
 bool Object::isString() const {
-    return type == ObjectType::STRING;
+    return m_type == ObjectType::STRING;
 }
 
 std::ostream& operator<<(std::ostream &stream, Object &object) {
@@ -20,9 +24,9 @@ StringObject* Object::asString() {
     return ((StringObject*)this);
 }
 
-StringObject::StringObject(std::string value) : m_str{std::move(value)} {}
+StringObject::StringObject(std::string value) : Object{ObjectType::STRING}, m_str{std::move(value)} {}
 
-StringObject StringObject::operator+(const StringObject &object) const {
+StringObject StringObject::operator+(StringObject &object) const {
     return StringObject{m_str + object.m_str};
 }
 
