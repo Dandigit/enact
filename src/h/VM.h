@@ -24,6 +24,8 @@ private:
 
     index_t m_currentInstruction;
 
+    InterpretResult execute();
+
     void resetStack();
 
     Value peek(int distance) const;

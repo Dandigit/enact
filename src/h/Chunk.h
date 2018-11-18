@@ -30,6 +30,7 @@ namespace OpCode {
         MULTIPLY,
         DIVIDE,
         MODULUS,
+        CONDITIONAL,
         NEGATE,
         NOT,
         RETURN,

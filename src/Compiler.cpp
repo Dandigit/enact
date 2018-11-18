@@ -95,6 +95,13 @@ void Compiler::binary() {
     }
 }
 
+void Compiler::ternary() {
+    parsePrecedence(Precedence::CONDITIONAL);
+    consume(TokenType::COLON, "Expected ':' after then value of conditional expression.");
+    parsePrecedence(Precedence::ASSIGNMENT);
+    emitByte(OpCode::CONDITIONAL);
+}
+
 bool Compiler::compile() {
     advance();
     expression();

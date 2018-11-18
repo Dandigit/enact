@@ -12,6 +12,13 @@ VM::VM(const Chunk &chunk) : m_chunk { chunk }, m_stackTop{ 0 }, m_ip{ chunk.cod
 }
 
 InterpretResult VM::run() {
+    InterpretResult result = execute();
+    resetStack();
+    sweep();
+    return result;
+}
+
+InterpretResult VM::execute() {
 #define BINARY_OP(op) \
     do { \
         if (!peek(0).isNumber() || !peek(1).isNumber()) { \
@@ -81,6 +88,14 @@ InterpretResult VM::run() {
                 push(Value{(double)((int)a % (int)b)});
                 break;
             }
+            case OpCode::CONDITIONAL: {
+                Value elseBranch = pop();
+                Value thenBranch = pop();
+                Value condition = pop();
+
+                push(condition.isTruthy() ? thenBranch : elseBranch);
+                break;
+            }
             case OpCode::NEGATE:
                 if (!peek(0).isNumber()) {
                     runtimeError("Operand must be a number.");
@@ -92,8 +107,6 @@ InterpretResult VM::run() {
                 push(Value{pop().isFalsey()});
                 break;
             case OpCode::RETURN:
-                resetStack();
-                sweep();
                 return InterpretResult::OK;
 
         }
