@@ -45,6 +45,8 @@ private:
     Token m_previous;
     Token m_current;
 
+    Object *m_last = nullptr;
+
     void advance();
     void consume(TokenType type, const std::string &message);
 

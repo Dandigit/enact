@@ -1,4 +1,5 @@
 #include "h/VM.h"
+#include "h/Compiler.h"
 
 #define DEBUG_TRACE_EXECUTION
 
@@ -91,10 +92,13 @@ InterpretResult VM::run() {
                 push(Value{pop().isFalsey()});
                 break;
             case OpCode::RETURN:
+                resetStack();
+                sweep();
                 return InterpretResult::OK;
 
         }
     }
+
 #undef BINARY_OP
 }
 
@@ -105,6 +109,15 @@ void VM::runtimeError(const std::string &message) {
 
 void VM::resetStack() {
     m_stackTop = 0;
+}
+
+void VM::sweep() {
+    Object *object = objects;
+    while (object != nullptr) {
+        Object *next = object->next;
+        delete object;
+        object = next;
+    }
 }
 
 void VM::push(Value value) {
