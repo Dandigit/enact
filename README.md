@@ -3,7 +3,8 @@ Matilda is a new programming language that's not designed to be unique or ground
 established technologies and paradigms and just makes them **nicer**.
 
 ## Example
-This is a very trivial example, but it displays Matilda's philosophy quite well. Take a simple matching function.
+This is a very trivial example, but it displays Matilda's philosophy quite well. Take a simple matching function:
+
 **Python**:
 ```
 def equals(x, y):
