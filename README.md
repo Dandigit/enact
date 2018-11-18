@@ -9,7 +9,7 @@ This is a very trivial example, but it displays Matilda's philosophy quite well.
 def equals(x, y):
     return x == y
 
-equals(2, 2) # true
+if equals(2, 2): print("true")
 ```
 
 **Matilda**:
@@ -18,7 +18,7 @@ fun (x) equals (y):
     return x == y
 end
 
-2 equals 2 // true
+if 2 equals 2: print "true"
 ```
 
 Matilda has taken traditional syntax (function calls), but has made it infinitely nicer.
