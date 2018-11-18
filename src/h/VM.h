@@ -24,6 +24,8 @@ private:
 
     index_t m_currentInstruction;
 
+    void resetStack();
+
     Value peek(int distance) const;
 public:
     explicit VM(const Chunk &chunk);

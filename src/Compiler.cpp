@@ -52,6 +52,11 @@ void Compiler::literal() {
     }
 }
 
+void Compiler::string() {
+    StringObject *object = new StringObject{m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2)};
+    emitConstant(Value{object});
+}
+
 void Compiler::unary() {
     TokenType operatorType = m_previous.type;
 
@@ -86,8 +91,8 @@ void Compiler::binary() {
 bool Compiler::compile() {
     advance();
     expression();
-    consume(TokenType::ENDFILE, "Expected end of expression.");
     emitByte(OpCode::RETURN);
+    consume(TokenType::ENDFILE, "Expected end of expression.");
 
     return !m_hadError;
 }
@@ -96,9 +101,14 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
     std::cerr << "[line " << token.line << "] Error";
 
     if (token.type == TokenType::ENDFILE) {
-        std::cerr << " at end:";
+        std::cerr << " at end: " << message << "\n\n";
     } else {
-        std::cerr << " at '" << token.lexeme << "':\n";
+        if (token.type == TokenType::ERROR) {
+            std::cerr << ":\n";
+        } else {
+            std::cerr << " at '" << token.lexeme << "':\n";
+        }
+
         std::cerr << "    " << m_scanner.getSourceLine(token.line) << "\n";
         for (int i = 1; i < token.col; ++i) {
             std::cerr << " ";
