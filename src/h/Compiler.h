@@ -65,6 +65,7 @@ private:
     void grouping();
     void number();
     void literal();
+    void string();
     void unary();
     void binary();
 
@@ -91,7 +92,7 @@ private:
             ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // LESS
             ParseRule{nullptr,             &Compiler::binary, Precedence::COMPARISON}, // LESS_EQUAL
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // IDENTIFIER
-            ParseRule{nullptr,             nullptr,           Precedence::NONE}, // STRING
+            ParseRule{&Compiler::string,   nullptr,           Precedence::NONE}, // STRING
             ParseRule{&Compiler::number,   nullptr,           Precedence::NONE}, // NUMBER
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // AND
             ParseRule{nullptr,             nullptr,           Precedence::NONE}, // BOOL

@@ -50,7 +50,23 @@ InterpretResult VM::run() {
             }
             case OpCode::GREATER: BINARY_OP(>); break;
             case OpCode::LESS: BINARY_OP(<); break;
-            case OpCode::ADD: BINARY_OP(+); break;
+            case OpCode::ADD: {
+                if (peek(0).isNumber() && peek(1).isNumber()) {
+                    double b = pop().asNumber();
+                    double a = pop().asNumber();
+                    push(Value{a + b});
+                } else if (peek(0).isObject() && peek(1).isObject() &&
+                            peek(0).asObject()->isString() && peek(1).asObject()->isString()) {
+                    StringObject *b = pop().asObject()->asString();
+                    StringObject *a = pop().asObject()->asString();
+                    StringObject *result = new StringObject{*a + *b};
+                    push(Value{result});
+                } else {
+                    runtimeError("Operands must be two numbers or two strings.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                break;
+            }
             case OpCode::SUBTRACT: BINARY_OP(-); break;
             case OpCode::MULTIPLY: BINARY_OP(*); break;
             case OpCode::DIVIDE: BINARY_OP(/); break;
@@ -83,7 +99,12 @@ InterpretResult VM::run() {
 }
 
 void VM::runtimeError(const std::string &message) {
-    std::cout << message << "\n[line " << m_chunk.getLine(m_currentInstruction) << "]\n";
+    std::cerr << message << "\n[line " << m_chunk.getLine(m_currentInstruction) << "]\n";
+    resetStack();
+}
+
+void VM::resetStack() {
+    m_stackTop = 0;
 }
 
 void VM::push(Value value) {
