@@ -46,6 +46,7 @@ private:
     Token m_current;
 
     Object *m_last = nullptr;
+    Object *m_objects = nullptr;
 
     void advance();
     void consume(TokenType type, const std::string &message);
@@ -123,6 +124,7 @@ public:
     explicit Compiler(std::string source);
     bool compile();
     Chunk& currentChunk();
+    Object* objects();
 };
 
 

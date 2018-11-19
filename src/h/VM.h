@@ -19,6 +19,8 @@ private:
     std::vector<Value> m_stack;
     index_t m_stackTop;
 
+    Object *m_objects;
+
     const std::vector<uint8_t> &m_ip;
     const std::vector<Value> &m_values;
 
@@ -30,7 +32,7 @@ private:
 
     Value peek(int distance) const;
 public:
-    explicit VM(const Chunk &chunk);
+    explicit VM(const Chunk &chunk, Object *objects);
 
     void runtimeError(const std::string &message);
 
