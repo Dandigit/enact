@@ -59,7 +59,7 @@ void Compiler::string() {
         m_last = object;
     } else {
         m_last = object;
-        objects = m_last;
+        m_objects = m_last;
     }
     emitConstant(Value{object});
 }
@@ -172,4 +172,8 @@ void Compiler::emitBytes(uint8_t byte1, uint8_t byte2) {
 
 void Compiler::emitConstant(Value value) {
     currentChunk().writeConstant(value, m_previous.line);
+}
+
+Object *Compiler::objects() {
+    return m_objects;
 }
