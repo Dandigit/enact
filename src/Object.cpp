@@ -16,6 +16,7 @@ bool Object::isString() const {
 
 std::ostream& operator<<(std::ostream &stream, Object &object) {
     if (object.isString()) stream << object.asString()->asStdString();
+    return stream;
 }
 
 StringObject* Object::asString() {
