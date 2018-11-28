@@ -1,7 +1,5 @@
 #include "h/Object.h"
 
-Object *objects = nullptr;
-
 Object::Object(ObjectType type) : m_type{type} {};
 
 bool Object::operator==(Object &object) {

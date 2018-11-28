@@ -36,6 +36,4 @@ public:
     const std::string& asStdString() const;
 };
 
-extern Object *objects;
-
 #endif //MATILDA_OBJECT_H

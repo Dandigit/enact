@@ -7,7 +7,12 @@
 #include <iostream>
 #endif
 
-VM::VM(const Chunk &chunk, Object *object) : m_chunk { chunk }, m_stackTop{ 0 }, m_ip{ chunk.code() }, m_values{ chunk.values() }, m_objects{object} {
+VM::VM(const Chunk &chunk, Object *objects) :
+        m_chunk{ chunk },
+        m_stackTop{ 0 },
+        m_ip{ chunk.code() },
+        m_values{ chunk.values() },
+        m_objects{ objects } {
     m_stack.resize(chunk.code().size() * MAX_PUSHES_PER_INSTRUCTION);
 }
 
@@ -125,7 +130,7 @@ void VM::resetStack() {
 }
 
 void VM::sweep() {
-    Object *object = objects;
+    Object *object = m_objects;
     while (object != nullptr) {
         Object *next = object->next;
         delete object;
