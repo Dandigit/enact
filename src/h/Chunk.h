@@ -33,6 +33,9 @@ namespace OpCode {
         CONDITIONAL,
         NEGATE,
         NOT,
+
+        PRINT,
+
         RETURN,
     };
 }

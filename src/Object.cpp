@@ -32,3 +32,17 @@ StringObject StringObject::operator+(StringObject &object) const {
 const std::string& StringObject::asStdString() const {
     return m_str;
 }
+
+Object *Allocator::m_last = nullptr;
+
+StringObject* Allocator::makeStringObject(std::string value) {
+    StringObject *object = new StringObject{std::move(value)};
+    if (m_last) {
+        m_last->next = object;
+        m_last = object;
+    } else {
+        m_last = object;
+    }
+
+    return object;
+}

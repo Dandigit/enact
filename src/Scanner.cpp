@@ -120,24 +120,27 @@ Token Scanner::errorToken(const std::string &what) {
 }
 
 TokenType Scanner::identifierType(std::string candidate) {
-    if (candidate == "and") return TokenType::AND;
-    if (candidate == "bool") return TokenType::BOOL;
-    if (candidate == "class") return TokenType::CLASS;
-    if (candidate == "const") return TokenType::CONST;
-    if (candidate == "else") return TokenType::ELSE;
-    if (candidate == "end") return TokenType::END;
-    if (candidate == "false") return TokenType::FALSE;
-    if (candidate == "fun") return TokenType::FUN;
-    if (candidate == "for") return TokenType::FOR;
-    if (candidate == "if") return TokenType::IF;
-    if (candidate == "nil") return TokenType::NIL;
-    if (candidate == "or") return TokenType::OR;
-    if (candidate == "return") return TokenType::RETURN;
-    if (candidate == "super") return TokenType::SUPER;
-    if (candidate == "this") return TokenType::THIS;
-    if (candidate == "true") return TokenType::TRUE;
-    if (candidate == "var") return TokenType::VAR;
-    if (candidate == "while") return TokenType::WHILE;
+    if (candidate == "and")     return TokenType::AND;
+    if (candidate == "bool")    return TokenType::BOOL;
+    if (candidate == "class")   return TokenType::CLASS;
+    if (candidate == "const")   return TokenType::CONST;
+    if (candidate == "else")    return TokenType::ELSE;
+    if (candidate == "end")     return TokenType::END;
+    if (candidate == "false")   return TokenType::FALSE;
+    if (candidate == "fun")     return TokenType::FUN;
+    if (candidate == "for")     return TokenType::FOR;
+    if (candidate == "if")      return TokenType::IF;
+    if (candidate == "nil")     return TokenType::NIL;
+    if (candidate == "or")      return TokenType::OR;
+    if (candidate == "return")  return TokenType::RETURN;
+    if (candidate == "super")   return TokenType::SUPER;
+    if (candidate == "this")    return TokenType::THIS;
+    if (candidate == "true")    return TokenType::TRUE;
+    if (candidate == "var")     return TokenType::VAR;
+    if (candidate == "while")   return TokenType::WHILE;
+    
+    // Temporary.
+    if (candidate == "print")   return TokenType::PRINT;
 
     return TokenType::IDENTIFIER;
 }
