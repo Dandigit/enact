@@ -53,13 +53,10 @@ void Compiler::literal() {
 }
 
 void Compiler::string() {
-    StringObject *object = new StringObject{m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2)};
-    if (m_last) {
-        m_last->next = object;
-        m_last = object;
-    } else {
-        m_last = object;
-        m_objects = m_last;
+    StringObject *object = Allocator::makeStringObject(m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2));
+    if (!m_hasAllocated) {
+        m_hasAllocated = true;
+        m_objects = object;
     }
     emitConstant(Value{object});
 }
@@ -102,12 +99,32 @@ void Compiler::ternary() {
     emitByte(OpCode::CONDITIONAL);
 }
 
+void Compiler::declaration() {
+    statement();
+}
+
+void Compiler::statement() {
+    if (match(TokenType::PRINT)) printStatement();
+    else expressionStatement();
+}
+
+void Compiler::printStatement() {
+    expression();
+    emitByte(OpCode::PRINT);
+    consume(TokenType::SEMICOLON, "Expected ';' after print statement.");
+}
+
+void Compiler::expressionStatement() {
+    expression();
+    consume(TokenType::SEMICOLON, "Expected ';' after expression.");
+}
+
 bool Compiler::compile() {
     advance();
-    expression();
+    while (!isAtEnd()) {
+        declaration();
+    }
     emitByte(OpCode::RETURN);
-    consume(TokenType::ENDFILE, "Expected end of expression.");
-
     return !m_hadError;
 }
 
@@ -153,12 +170,28 @@ void Compiler::advance() {
     }
 }
 
+bool Compiler::check(TokenType expected) {
+    return m_current.type == expected;
+}
+
+bool Compiler::match(TokenType expected) {
+    if (check(expected)) {
+        advance();
+        return true;
+    }
+    return false;
+}
+
 void Compiler::consume(TokenType type, const std::string &message) {
     if (m_current.type == type) {
         advance();
     } else {
         errorAtCurrent(message);
     }
+}
+
+bool Compiler::isAtEnd() {
+    return m_current.type == TokenType::ENDFILE;
 }
 
 void Compiler::emitByte(uint8_t byte) {

@@ -45,11 +45,14 @@ private:
     Token m_previous;
     Token m_current;
 
-    Object *m_last = nullptr;
+    bool m_hasAllocated = false;
     Object *m_objects = nullptr;
 
     void advance();
+    bool check(TokenType expected);
+    bool match(TokenType expected);
     void consume(TokenType type, const std::string &message);
+    bool isAtEnd();
 
     void emitByte(uint8_t byte);
     void emitBytes(uint8_t byte1, uint8_t byte2);
@@ -64,7 +67,7 @@ private:
 
     void expression();
 
-    // Parse rules
+    // Expression parse rules
     void grouping();
     void number();
     void literal();
@@ -119,6 +122,13 @@ private:
             ParseRule{nullptr,             nullptr,            Precedence::NONE}, // ERROR
             ParseRule{nullptr,             nullptr,            Precedence::NONE} // ENDFILE
     };
+
+    void declaration();
+    void statement();
+
+    // Statement types
+    void printStatement();
+    void expressionStatement();
 
 public:
     explicit Compiler(std::string source);

@@ -72,7 +72,7 @@ InterpretResult VM::execute() {
                             peek(0).asObject()->isString() && peek(1).asObject()->isString()) {
                     StringObject *b = pop().asObject()->asString();
                     StringObject *a = pop().asObject()->asString();
-                    StringObject *result = new StringObject{*a + *b};
+                    StringObject *result = Allocator::makeStringObject((*a + *b).asStdString());
                     push(Value{result});
                 } else {
                     runtimeError("Operands must be two numbers or two strings.");
@@ -111,6 +111,9 @@ InterpretResult VM::execute() {
             case OpCode::NOT:
                 push(Value{pop().isFalsey()});
                 break;
+            case OpCode::PRINT:
+                std::cout << pop() << "\n";
+                break;
             case OpCode::RETURN:
                 return InterpretResult::OK;
 
@@ -133,6 +136,7 @@ void VM::sweep() {
     Object *object = m_objects;
     while (object != nullptr) {
         Object *next = object->next;
+        std::cout << "[strace]: Swept object \"" << object->asString()->asStdString() << "\".\n";
         delete object;
         object = next;
     }

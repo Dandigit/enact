@@ -36,4 +36,11 @@ public:
     const std::string& asStdString() const;
 };
 
+class Allocator {
+private:
+    static Object *m_last;
+public:
+    static StringObject* makeStringObject(std::string value);
+};
+
 #endif //MATILDA_OBJECT_H
