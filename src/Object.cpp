@@ -42,6 +42,7 @@ StringObject* Allocator::makeStringObject(std::string value) {
         m_last = object;
     } else {
         m_last = object;
+        m_last->next = nullptr;
     }
 
     return object;

@@ -11,18 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2be96c61-a869-49e1-a6f0-06fa04b9dd52" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chunk.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chunk.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compiler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compiler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Object.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Object.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scanner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scanner.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VM.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/VM.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/h/Chunk.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/h/Chunk.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/h/Compiler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/h/Compiler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/h/Object.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/h/Object.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/h/Token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/h/Token.h" afterDir="false" />
-    </list>
+    <list default="true" id="2be96c61-a869-49e1-a6f0-06fa04b9dd52" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,11 +22,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/h/Compiler.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+              <caret line="122" column="82" selection-start-line="122" selection-start-column="82" selection-end-line="122" selection-end-column="82" />
               <folding>
                 <element signature="e#55#71#0" expanded="true" />
               </folding>
@@ -48,11 +37,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compiler.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="870">
-              <caret line="58" column="27" selection-start-line="58" selection-start-column="27" selection-end-line="58" selection-end-column="27" />
+            <state relative-caret-position="225">
+              <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="mock:///matilda (disassembly)">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -120,25 +118,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/VM.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
               <caret line="74" column="96" selection-start-line="74" selection-start-column="96" selection-end-line="74" selection-end-column="96" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/h/Chunk.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-120">
-              <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
-              <folding>
-                <element signature="e#78#96#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -185,9 +171,9 @@
         <option value="$PROJECT_DIR$/src/Chunk.cpp" />
         <option value="$PROJECT_DIR$/src/h/Object.h" />
         <option value="$PROJECT_DIR$/src/Object.cpp" />
-        <option value="$PROJECT_DIR$/src/Compiler.cpp" />
         <option value="$PROJECT_DIR$/src/h/Compiler.h" />
         <option value="$PROJECT_DIR$/src/VM.cpp" />
+        <option value="$PROJECT_DIR$/src/Compiler.cpp" />
       </list>
     </option>
   </component>
@@ -291,23 +277,23 @@
       <workItem from="1542630781568" duration="118000" />
       <workItem from="1543382814656" duration="158000" />
       <workItem from="1543393197841" duration="9263000" />
-      <workItem from="1543441098692" duration="4906000" />
+      <workItem from="1543441098692" duration="5484000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84332000" />
+    <option name="totallyTimeSpent" value="84910000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1123409" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1123409" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32972974" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32829374" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39891893" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32829374" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39848813" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -351,6 +337,26 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>m_previous.type</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(this-&gt;*(infixRule))()</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(this-&gt;*(infixRule))</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>*infixRule</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>compiler.firstObject</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -372,21 +378,6 @@
       </expression>
       <expression>
         <expression-string>this</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>chunkString.str()</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>chunkString</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>result.str</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -519,32 +510,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/h/Compiler.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
-          <folding>
-            <element signature="e#55#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/h/VM.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="21" column="11" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
           <folding>
             <element signature="e#35#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compiler.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="58" column="27" selection-start-line="58" selection-start-column="27" selection-end-line="58" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -572,6 +543,26 @@
           <caret line="74" column="96" selection-start-line="74" selection-start-column="96" selection-end-line="74" selection-end-column="96" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compiler.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/h/Compiler.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="122" column="82" selection-start-line="122" selection-start-column="82" selection-end-line="122" selection-end-column="82" />
+          <folding>
+            <element signature="e#55#71#0" expanded="true" />
           </folding>
         </state>
       </provider>
