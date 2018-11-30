@@ -20,6 +20,7 @@ bool Object::isIdentifier() const {
 
 std::ostream& operator<<(std::ostream &stream, Object &object) {
     if (object.isString()) stream << object.asString()->asStdString();
+    else if (object.isIdentifier()) stream << object.asIdentifier()->asStdString();
     return stream;
 }
 

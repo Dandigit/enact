@@ -130,7 +130,7 @@ InterpretResult VM::execute() {
             case OpCode::SET_GLOBAL: {
                 Value value = pop();
 
-                if (peek(0).isObject() && !peek(0).asObject()->isIdentifier()) {
+                if (!peek(0).isObject() || !peek(0).asObject()->isIdentifier()) {
                     runtimeError("Invalid assignment target.");
                     return InterpretResult::RUNTIME_ERROR;
                 }
