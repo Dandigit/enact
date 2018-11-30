@@ -149,6 +149,7 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
     }
 
     m_hadError = true;
+    while (m_current.type != TokenType::SEMICOLON) advance();
 }
 
 void Compiler::errorAtCurrent(const std::string &message) {
