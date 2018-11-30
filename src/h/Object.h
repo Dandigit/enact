@@ -5,10 +5,12 @@
 #include <string>
 
 enum class ObjectType {
-    STRING
+    STRING,
+    IDENTIFIER
 };
 
 class StringObject;
+class IdentifierObject;
 
 class Object {
 private:
@@ -20,8 +22,10 @@ public:
     bool operator==(Object &object);
 
     bool isString() const;
+    bool isIdentifier() const;
 
     StringObject* asString();
+    IdentifierObject* asIdentifier();
 
     friend std::ostream& operator<<(std::ostream &stream, Object &object);
 };
@@ -36,11 +40,21 @@ public:
     const std::string& asStdString() const;
 };
 
+class IdentifierObject : public Object {
+private:
+    std::string m_str;
+public:
+    explicit IdentifierObject(std::string value);
+    const std::string& asStdString() const;
+};
+
 class Allocator {
 private:
     static Object *m_last;
+    static void setNext(Object *object);
 public:
     static StringObject* makeStringObject(std::string value);
+    static IdentifierObject* makeIdentifierObject(std::string value);
 };
 
 #endif //MATILDA_OBJECT_H

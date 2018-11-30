@@ -39,7 +39,7 @@ void Compiler::grouping() {
 }
 
 void Compiler::variable() {
-    StringObject *name = Allocator::makeStringObject(m_previous.lexeme);
+    IdentifierObject *name = Allocator::makeIdentifierObject(m_previous.lexeme);
     emitConstant(Value{name});
     emitByte(OpCode::GET_GLOBAL);
 }
@@ -115,7 +115,7 @@ void Compiler::variableDeclaration() {
     consume(TokenType::IDENTIFIER, "Expected variable name.");
     Token name = m_previous;
 
-    StringObject *nameObject = Allocator::makeStringObject(name.lexeme);
+    IdentifierObject *nameObject = Allocator::makeIdentifierObject(name.lexeme);
     emitConstant(Value{nameObject});
 
     consume(TokenType::EQUAL, "Expected '=' after variable name.");

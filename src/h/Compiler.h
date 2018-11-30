@@ -93,7 +93,7 @@ private:
             ParseRule{nullptr,             &Compiler::binary,  Precedence::FACTOR}, // STAR
             ParseRule{&Compiler::unary,    nullptr,            Precedence::UNARY}, // BANG
             ParseRule{nullptr,             &Compiler::binary,  Precedence::EQUALITY}, // BANG_EQUAL
-            ParseRule{nullptr,             &Compiler::binary,  Precedence::NONE}, // EQUAL
+            ParseRule{nullptr,             &Compiler::binary,  Precedence::ASSIGNMENT}, // EQUAL
             ParseRule{nullptr,             &Compiler::binary,  Precedence::EQUALITY}, // EQUAL_EQUAL
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // GREATER
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // GREATER_EQUAL

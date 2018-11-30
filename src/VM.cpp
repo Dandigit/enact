@@ -114,12 +114,12 @@ InterpretResult VM::execute() {
                 break;
             case OpCode::DEFINE_GLOBAL: {
                 Value value = pop();
-                std::string name = pop().asObject()->asString()->asStdString();
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
                 m_globals.create(name, value);
                 break;
             }
             case OpCode::GET_GLOBAL: {
-                std::string name = pop().asObject()->asString()->asStdString();
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
                 if (!m_globals.contains(name)) {
                     runtimeError("Undefined variable '" + name + "'.");
                     return InterpretResult::RUNTIME_ERROR;
@@ -129,7 +129,19 @@ InterpretResult VM::execute() {
             }
             case OpCode::SET_GLOBAL: {
                 Value value = pop();
-                std::string name = pop().asObject()->asString()->asStdString();
+
+                if (peek(0).isObject() && !peek(0).asObject()->isIdentifier()) {
+                    runtimeError("Invalid assignment target.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
+
+                if (!m_globals.contains(name)) {
+                    runtimeError("Undefined variable '" + name + "'.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+
                 m_globals.set(name, value);
                 push(value);
                 break;
