@@ -38,6 +38,12 @@ void Compiler::grouping() {
     consume(TokenType::RIGHT_PAREN, "Expected ')' after expression.");
 }
 
+void Compiler::variable() {
+    IdentifierObject *name = Allocator::makeIdentifierObject(m_previous.lexeme);
+    emitConstant(Value{name});
+    emitByte(OpCode::GET_GLOBAL);
+}
+
 void Compiler::number() {
     double value = std::stod(m_previous.lexeme);
     emitConstant(Value{value});
@@ -79,6 +85,7 @@ void Compiler::binary() {
     parsePrecedence(rule.precedence);
 
     switch (operatorType) {
+        case TokenType::EQUAL: emitByte(OpCode::SET_GLOBAL); break;
         case TokenType::EQUAL_EQUAL: emitByte(OpCode::EQUAL); break;
         case TokenType::BANG_EQUAL: emitBytes(OpCode::EQUAL, OpCode::NOT); break;
         case TokenType::LESS: emitByte(OpCode::LESS); break;
@@ -100,7 +107,22 @@ void Compiler::ternary() {
 }
 
 void Compiler::declaration() {
-    statement();
+    if (match(TokenType::VAR)) variableDeclaration();
+    else statement();
+}
+
+void Compiler::variableDeclaration() {
+    consume(TokenType::IDENTIFIER, "Expected variable name.");
+    Token name = m_previous;
+
+    IdentifierObject *nameObject = Allocator::makeIdentifierObject(name.lexeme);
+    emitConstant(Value{nameObject});
+
+    consume(TokenType::EQUAL, "Expected '=' after variable name.");
+
+    expression();
+
+    emitByte(OpCode::DEFINE_GLOBAL);
 }
 
 void Compiler::statement() {

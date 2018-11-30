@@ -12,7 +12,8 @@ VM::VM(const Chunk &chunk, Object *objects) :
         m_stackTop{ 0 },
         m_ip{ chunk.code() },
         m_values{ chunk.values() },
-        m_objects{ objects } {
+        m_objects{ objects },
+        m_globals{ nullptr } {
     m_stack.resize(chunk.code().size() * MAX_PUSHES_PER_INSTRUCTION);
 }
 
@@ -111,6 +112,40 @@ InterpretResult VM::execute() {
             case OpCode::NOT:
                 push(Value{pop().isFalsey()});
                 break;
+            case OpCode::DEFINE_GLOBAL: {
+                Value value = pop();
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
+                m_globals.create(name, value);
+                break;
+            }
+            case OpCode::GET_GLOBAL: {
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
+                if (!m_globals.contains(name)) {
+                    runtimeError("Undefined variable '" + name + "'.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+                push(m_globals.find(name));
+                break;
+            }
+            case OpCode::SET_GLOBAL: {
+                Value value = pop();
+
+                if (!peek(0).isObject() || !peek(0).asObject()->isIdentifier()) {
+                    runtimeError("Invalid assignment target.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+
+                std::string name = pop().asObject()->asIdentifier()->asStdString();
+
+                if (!m_globals.contains(name)) {
+                    runtimeError("Undefined variable '" + name + "'.");
+                    return InterpretResult::RUNTIME_ERROR;
+                }
+
+                m_globals.set(name, value);
+                push(value);
+                break;
+            }
             case OpCode::PRINT:
                 std::cout << pop() << "\n";
                 break;
@@ -119,6 +154,8 @@ InterpretResult VM::execute() {
 
         }
     }
+
+    sweep();
 
 #undef BINARY_OP
 }
@@ -136,7 +173,7 @@ void VM::sweep() {
     Object *object = m_objects;
     while (object != nullptr) {
         Object *next = object->next;
-        std::cout << "[strace]: Swept object \"" << object->asString()->asStdString() << "\".\n";
+        std::cout << "[trace]: Swept object \"" << object->asString()->asStdString() << "\".\n";
         delete object;
         object = next;
     }

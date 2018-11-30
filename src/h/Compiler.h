@@ -69,6 +69,7 @@ private:
 
     // Expression parse rules
     void grouping();
+    void variable();
     void number();
     void literal();
     void string();
@@ -92,13 +93,13 @@ private:
             ParseRule{nullptr,             &Compiler::binary,  Precedence::FACTOR}, // STAR
             ParseRule{&Compiler::unary,    nullptr,            Precedence::UNARY}, // BANG
             ParseRule{nullptr,             &Compiler::binary,  Precedence::EQUALITY}, // BANG_EQUAL
-            ParseRule{nullptr,             nullptr,            Precedence::NONE}, // EQUAL
+            ParseRule{nullptr,             &Compiler::binary,  Precedence::ASSIGNMENT}, // EQUAL
             ParseRule{nullptr,             &Compiler::binary,  Precedence::EQUALITY}, // EQUAL_EQUAL
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // GREATER
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // GREATER_EQUAL
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // LESS
             ParseRule{nullptr,             &Compiler::binary,  Precedence::COMPARISON}, // LESS_EQUAL
-            ParseRule{nullptr,             nullptr,            Precedence::NONE}, // IDENTIFIER
+            ParseRule{&Compiler::variable, nullptr,            Precedence::NONE}, // IDENTIFIER
             ParseRule{&Compiler::string,   nullptr,            Precedence::NONE}, // STRING
             ParseRule{&Compiler::number,   nullptr,            Precedence::NONE}, // NUMBER
             ParseRule{nullptr,             nullptr,            Precedence::NONE}, // AND
@@ -124,6 +125,10 @@ private:
     };
 
     void declaration();
+
+    // Declaration types
+    void variableDeclaration();
+
     void statement();
 
     // Statement types

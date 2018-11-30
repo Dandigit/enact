@@ -19,20 +19,29 @@ namespace OpCode {
     enum OpCode {
         CONSTANT,
         CONSTANT_LONG,
+
         TRUE,
         FALSE,
         NIL,
+
         EQUAL,
         GREATER,
         LESS,
+
         ADD,
         SUBTRACT,
         MULTIPLY,
         DIVIDE,
         MODULUS,
+
         CONDITIONAL,
+
         NEGATE,
         NOT,
+
+        DEFINE_GLOBAL,
+        GET_GLOBAL,
+        SET_GLOBAL,
 
         PRINT,
 

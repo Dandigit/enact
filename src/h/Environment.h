@@ -11,7 +11,7 @@ private:
     std::unordered_map<std::string, Value> m_variables;
 public:
     Environment(Environment* enclosing);
-    Value* find(const std::string &name);
+    Value find(const std::string &name);
     bool contains(const std::string &name);
     void set(const std::string &name, Value value);
     void create(const std::string &name, Value value);
