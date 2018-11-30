@@ -105,6 +105,7 @@ void Compiler::declaration() {
 
 void Compiler::statement() {
     if (match(TokenType::PRINT)) printStatement();
+    else if (match(TokenType::SEMICOLON)) return; // Null statement;
     else expressionStatement();
 }
 
@@ -149,7 +150,6 @@ void Compiler::errorAt(const Token &token, const std::string &message) {
     }
 
     m_hadError = true;
-    while (m_current.type != TokenType::SEMICOLON) advance();
 }
 
 void Compiler::errorAtCurrent(const std::string &message) {

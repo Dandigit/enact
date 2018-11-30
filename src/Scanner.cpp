@@ -18,10 +18,10 @@ Token Scanner::scanToken() {
 
     switch (c) {
         // Single character tokens.
-        case '(': return makeToken(TokenType::LEFT_PAREN);
-        case ')': return makeToken(TokenType::RIGHT_PAREN);
-        case '[': return makeToken(TokenType::LEFT_SQUARE);
-        case ']': return makeToken(TokenType::RIGHT_SQUARE);
+        case '(': ++m_openParen; return makeToken(TokenType::LEFT_PAREN);
+        case ')': --m_openParen; return makeToken(TokenType::RIGHT_PAREN);
+        case '[': ++m_openSquare; return makeToken(TokenType::LEFT_SQUARE);
+        case ']': --m_openSquare; return makeToken(TokenType::RIGHT_SQUARE);
         case ':': return makeToken(TokenType::COLON);
         case ',': return makeToken(TokenType::COMMA);
         case '.': return makeToken(TokenType::DOT);
@@ -32,7 +32,7 @@ Token Scanner::scanToken() {
         case '/': return makeToken(TokenType::SLASH);
         case '*': return makeToken(TokenType::STAR);
 
-        // 1 or 2 character tokens.
+            // 1 or 2 character tokens.
         case '!':
             return makeToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
         case '=':
@@ -44,6 +44,14 @@ Token Scanner::scanToken() {
 
         case '"':
             return string();
+
+        case '\n':
+            ++m_line;
+            if (m_openParen == 0 && m_openSquare == 0 &&
+                m_last.type != TokenType::SEMICOLON) {
+                return makeToken(TokenType::SEMICOLON);
+            }
+            return scanToken();
     }
 
     std::string errorMessage = "Unrecognized character '";
@@ -59,11 +67,6 @@ void Scanner::skipWhitespace() {
             case ' ':
             case '\t':
             case '\r':
-                advance();
-                break;
-
-            case '\n':
-                ++m_line;
                 advance();
                 break;
 
@@ -112,7 +115,8 @@ Token Scanner::string() {
 
 Token Scanner::makeToken(TokenType type) {
     std::string lexeme{m_source.substr(m_start, m_current - m_start)};
-    return Token{type, lexeme, m_line, m_col};
+    m_last = Token{type, lexeme, m_line, m_col};
+    return m_last;
 }
 
 Token Scanner::errorToken(const std::string &what) {
@@ -138,7 +142,7 @@ TokenType Scanner::identifierType(std::string candidate) {
     if (candidate == "true")    return TokenType::TRUE;
     if (candidate == "var")     return TokenType::VAR;
     if (candidate == "while")   return TokenType::WHILE;
-    
+
     // Temporary.
     if (candidate == "print")   return TokenType::PRINT;
 
@@ -188,8 +192,8 @@ bool Scanner::isDigit(char c) {
 
 bool Scanner::isIdentifierStart(char c) {
     return (c >= 'a' && c <= 'z') ||
-            (c >= 'A' && c <= 'Z') ||
-            c == '_';
+           (c >= 'A' && c <= 'Z') ||
+           c == '_';
 }
 
 bool Scanner::isIdentifier(char c) {

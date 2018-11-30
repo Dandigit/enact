@@ -17,6 +17,11 @@ private:
     line_t m_line = 1;
     col_t m_col = 0;
 
+    int m_openParen = 0;
+    int m_openSquare = 0;
+
+    Token m_last;
+
     Token number();
     Token identifier();
     Token string();
