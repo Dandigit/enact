@@ -89,6 +89,9 @@ DisassembledChunk Chunk::disassembleInstruction(index_t index) const {
         case OpCode::CONDITIONAL: stream << "CONDITIONAL"; break;
         case OpCode::NEGATE: stream << "NEGATE"; break;
         case OpCode::NOT: stream << "NOT"; break;
+        case OpCode::DEFINE_GLOBAL: stream << "DEFINE_GLOBAL"; break;
+        case OpCode::GET_GLOBAL: stream << "GET_GLOBAL"; break;
+        case OpCode::SET_GLOBAL: stream << "SET_GLOBAL"; break;
         case OpCode::PRINT: stream << "PRINT"; break;
         case OpCode::RETURN: stream << "RETURN"; break;
     }
