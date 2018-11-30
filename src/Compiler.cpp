@@ -35,7 +35,7 @@ void Compiler::expression() {
 
 void Compiler::grouping() {
     expression();
-    consume(TokenType::ENDFILE, "Expected ')' after expression.");
+    consume(TokenType::RIGHT_PAREN, "Expected ')' after expression.");
 }
 
 void Compiler::number() {
