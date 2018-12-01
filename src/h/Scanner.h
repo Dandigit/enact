@@ -1,9 +1,5 @@
-//
-// Created by dan on 11/11/18.
-//
-
-#ifndef GVM_SCANNER_H
-#define GVM_SCANNER_H
+#ifndef MATILDA_SCANNER_H
+#define MATILDA_SCANNER_H
 
 #include <string>
 
@@ -54,4 +50,4 @@ public:
 };
 
 
-#endif //GVM_SCANNER_H
+#endif //MATILDA_SCANNER_H

@@ -10,13 +10,14 @@
 #include "h/Matilda.h"
 #include "h/VM.h"
 
+VM Matilda::m_vm{};
+
 InterpretResult Matilda::run(const std::string &source) {
     Compiler compiler{source};
     if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
     std::cout << compiler.currentChunk().disassemble();
 
-    VM vm{compiler.currentChunk()};
-    return vm.run();
+    return m_vm.run(compiler.currentChunk());
 }
 
 void Matilda::runFile(const std::string &path) {
@@ -68,6 +69,7 @@ void Matilda::start(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     Matilda::start(argc, argv);
+    Allocator::freeAll();
 
     return 0;
 }

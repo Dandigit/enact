@@ -7,24 +7,30 @@
 #include <iostream>
 #endif
 
-VM::VM(const Chunk &chunk) :
-        m_chunk{ chunk },
+VM::VM() :
+        m_chunk{ nullptr },
         m_stackTop{ 0 },
-        m_ip{ chunk.code() },
-        m_values{ chunk.values() },
-        m_objects{ Allocator::objects() },
+        m_ip{ nullptr },
+        m_values{ nullptr },
         m_globals{ nullptr } {
-    m_stack.resize(chunk.code().size() * MAX_PUSHES_PER_INSTRUCTION);
 }
 
-InterpretResult VM::run() {
+InterpretResult VM::run(const Chunk &chunk) {
+    m_chunk = &chunk;
+    m_ip = &m_chunk->code();
+    m_values = &m_chunk->values();
+
+    m_stack.resize(m_ip->size() * MAX_PUSHES_PER_INSTRUCTION);
+
     InterpretResult result = execute();
     resetStack();
-    sweep();
     return result;
 }
 
 InterpretResult VM::execute() {
+#define READ_BYTE() ((*m_ip)[i++])
+#define READ_CONSTANT() ((*m_values)[READ_BYTE()])
+#define READ_CONSTANT_LONG() ((*m_values)[unshiftBytes(READ_BYTE(), READ_BYTE(), READ_BYTE())])
 #define BINARY_OP(op) \
     do { \
         if (!peek(0).isNumber() || !peek(1).isNumber()) { \
@@ -36,21 +42,23 @@ InterpretResult VM::execute() {
         push(Value{a op b}); \
     } while (false)
 
-    for (int i = 0; i < m_ip.size(); ++i) {
+    int i = 0;
+    while (true) {
         m_currentInstruction = i;
 #ifdef DEBUG_TRACE_EXECUTION
         std::cout << "    ";
         for (int stackIndex = 0; stackIndex < m_stackTop; ++stackIndex) {
             std::cout << "[" << m_stack[stackIndex] << "] ";
         }
-        std::cout << "\n" << m_chunk.disassembleInstruction(i).str;
+        DisassembledChunk disassembled = m_chunk->disassembleInstruction(i);
+        std::cout << "\n" << disassembled.str;
 #endif
-        switch (m_ip[i]) {
+        switch (READ_BYTE()) {
             case OpCode::CONSTANT:
-                push(m_values[m_ip[++i]]);
+                push(READ_CONSTANT());
                 break;
             case OpCode::CONSTANT_LONG:
-                push(m_values[unshiftBytes(m_ip[i + 1], m_ip[i + 2], m_ip[i + 3])]);
+                push(READ_CONSTANT_LONG());
                 i += 3;
                 break;
             case OpCode::TRUE: push(Value{true}); break;
@@ -154,29 +162,20 @@ InterpretResult VM::execute() {
 
         }
     }
-
-    sweep();
-
+#undef READ_BYTE
+#undef READ_CONSTANT
+#undef READ_CONSTANT_LONG
 #undef BINARY_OP
 }
 
 void VM::runtimeError(const std::string &message) {
-    std::cerr << message << "\n[line " << m_chunk.getLine(m_currentInstruction) << "]\n";
+    std::cerr << message << "\n[line " << m_chunk->getLine(m_currentInstruction) << "]\n";
     resetStack();
+    Allocator::freeAll();
 }
 
 void VM::resetStack() {
     m_stackTop = 0;
-}
-
-void VM::sweep() {
-    Object *object = m_objects;
-    while (object != nullptr) {
-        Object *next = object->next;
-        std::cout << "[trace]: Swept object \"" << object->asString()->asStdString() << "\".\n";
-        delete object;
-        object = next;
-    }
 }
 
 void VM::push(Value value) {
