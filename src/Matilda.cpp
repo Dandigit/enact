@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "h/Chunk.h"
 #include "h/Compiler.h"
@@ -30,14 +31,14 @@ void Matilda::runFile(const std::string &path) {
         std::exit((int)ExitCode::FILE_ERROR);
     }
 
-    std::string fileContents;
+    std::stringstream fileContents;
     std::string currentLine;
 
-    while (std::getline(std::cin, currentLine)) {
-        fileContents += currentLine;
+    while (std::getline(file, currentLine)) {
+        fileContents << currentLine << "\n";
     }
 
-    InterpretResult result = run(fileContents);
+    InterpretResult result = run(fileContents.str());
 
     if (result == InterpretResult::COMPILE_ERROR) exit((int)ExitCode::COMPILE_ERROR);
     if (result == InterpretResult::RUNTIME_ERROR) exit((int)ExitCode::RUNTIME_ERROR);
