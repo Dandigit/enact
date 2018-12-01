@@ -1,5 +1,5 @@
-#ifndef GVM_VM_H
-#define GVM_VM_H
+#ifndef MATILDA_VM_H
+#define MATILDA_VM_H
 
 #include "Chunk.h"
 #include "Environment.h"
@@ -16,14 +16,12 @@ enum class InterpretResult {
 
 class VM {
 private:
-    const Chunk &m_chunk;
+    const Chunk *m_chunk;
     std::vector<Value> m_stack;
     index_t m_stackTop;
 
-    Object *m_objects;
-
-    const std::vector<uint8_t> &m_ip;
-    const std::vector<Value> &m_values;
+    const std::vector<uint8_t> *m_ip;
+    const std::vector<Value> *m_values;
 
     Environment m_globals;
 
@@ -35,16 +33,15 @@ private:
 
     Value peek(int distance) const;
 public:
-    explicit VM(const Chunk &chunk);
+    explicit VM();
 
     void runtimeError(const std::string &message);
 
-    InterpretResult run();
-    void sweep();
+    InterpretResult run(const Chunk &chunk);
 
     // Stack operations
     void push(Value value);
     Value pop();
 };
 
-#endif //GVM_VM_H
+#endif //MATILDA_VM_H

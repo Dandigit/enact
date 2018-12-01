@@ -1,9 +1,5 @@
-//
-// Created by dan on 11/11/18.
-//
-
-#ifndef GVM_MATILDA_H
-#define GVM_MATILDA_H
+#ifndef MATILDA_MATILDA_H
+#define MATILDA_MATILDA_H
 
 #include <string>
 #include "VM.h"
@@ -17,6 +13,7 @@ enum class ExitCode {
 };
 
 class Matilda {
+    static VM m_vm;
 public:
     static InterpretResult run(const std::string &source);
     static void runFile(const std::string &path);
@@ -26,4 +23,4 @@ public:
 
 int main(int argc, char *argv[]);
 
-#endif //GVM_MATILDA_H
+#endif //MATILDA_MATILDA_H

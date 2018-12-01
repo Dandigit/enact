@@ -144,6 +144,9 @@ bool Compiler::compile() {
         declaration();
     }
     emitByte(OpCode::RETURN);
+
+    if (m_hadError) Allocator::freeAll();
+
     return !m_hadError;
 }
 

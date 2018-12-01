@@ -1,9 +1,5 @@
-//
-// Created by dan on 11/11/18.
-//
-
-#ifndef GVM_TOKEN_H
-#define GVM_TOKEN_H
+#ifndef MATILDA_TOKEN_H
+#define MATILDA_TOKEN_H
 
 #include "common.h"
 
@@ -43,4 +39,4 @@ struct Token {
 };
 
 
-#endif //GVM_TOKEN_H
+#endif //MATILDA_TOKEN_H

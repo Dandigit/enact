@@ -13,6 +13,9 @@ public:
     static StringObject* makeStringObject(std::string value);
     static IdentifierObject* makeIdentifierObject(std::string value);
 
+    static void freeAll();
+    static void reset();
+
     static Object* objects();
 };
 
