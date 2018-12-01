@@ -47,28 +47,3 @@ IdentifierObject::IdentifierObject(std::string value) : Object{ObjectType::IDENT
 const std::string &IdentifierObject::asStdString() const {
     return m_str;
 }
-
-Object *Allocator::m_last = nullptr;
-
-StringObject* Allocator::makeStringObject(std::string value) {
-    StringObject *object = new StringObject{std::move(value)};
-    setNext(object);
-
-    return object;
-}
-
-IdentifierObject* Allocator::makeIdentifierObject(std::string value) {
-    IdentifierObject *object = new IdentifierObject{std::move(value)};
-    setNext(object);
-    return object;
-}
-
-void Allocator::setNext(Object *object) {
-    if (m_last) {
-        m_last->next = object;
-        m_last = object;
-    } else {
-        m_last = object;
-        m_last->next = nullptr;
-    }
-}

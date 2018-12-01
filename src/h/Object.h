@@ -48,13 +48,4 @@ public:
     const std::string& asStdString() const;
 };
 
-class Allocator {
-private:
-    static Object *m_last;
-    static void setNext(Object *object);
-public:
-    static StringObject* makeStringObject(std::string value);
-    static IdentifierObject* makeIdentifierObject(std::string value);
-};
-
 #endif //MATILDA_OBJECT_H

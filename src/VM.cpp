@@ -7,12 +7,12 @@
 #include <iostream>
 #endif
 
-VM::VM(const Chunk &chunk, Object *objects) :
+VM::VM(const Chunk &chunk) :
         m_chunk{ chunk },
         m_stackTop{ 0 },
         m_ip{ chunk.code() },
         m_values{ chunk.values() },
-        m_objects{ objects },
+        m_objects{ Allocator::objects() },
         m_globals{ nullptr } {
     m_stack.resize(chunk.code().size() * MAX_PUSHES_PER_INSTRUCTION);
 }
