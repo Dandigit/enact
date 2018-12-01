@@ -28,10 +28,10 @@ Another fantastic feature supported in Matilda is optional typing - you can make
 typing in the same language, abolishing the need for confusing generics and templates and allowing rapid prototyping and 
 development.
 ```
-var dynamic = 2
+dynamic := 2
 dynamic = "foo"
 
-int static = 2
+static ::= 2
 static = "foo" // Error!
 
 fun takeStaticDynamic(x, int y):
