@@ -171,7 +171,6 @@ InterpretResult VM::execute() {
 void VM::runtimeError(const std::string &message) {
     std::cerr << message << "\n[line " << m_chunk->getLine(m_currentInstruction) << "]\n";
     resetStack();
-    Allocator::freeAll();
 }
 
 void VM::resetStack() {
