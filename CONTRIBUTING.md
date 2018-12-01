@@ -5,7 +5,7 @@ Before you get started helping out, have a quick read over this guide to know wh
 
 ## Code of Conduct
 
-All participation in the Matilda project is to be governed by the [Code of Conduct](). Any abusive behaviour may be reported to
+All participation in the Matilda project is to be governed by the [Code of Conduct](https://github.com/Dandigit/matilda/blob/master/CODE_OF_CONDUCT.md). Any abusive behaviour may be reported to
 `matilda@dandigit.com`.
 
 ## How can I contribute?
