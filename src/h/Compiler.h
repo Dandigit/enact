@@ -5,6 +5,7 @@
 #include <functional>
 #include <string>
 
+#include "Allocator.h"
 #include "Chunk.h"
 #include "Scanner.h"
 #include "Token.h"
@@ -44,9 +45,6 @@ private:
 
     Token m_previous;
     Token m_current;
-
-    bool m_hasAllocated = false;
-    Object *m_objects = nullptr;
 
     void advance();
     bool check(TokenType expected);
@@ -139,7 +137,6 @@ public:
     explicit Compiler(std::string source);
     bool compile();
     Chunk& currentChunk();
-    Object* objects();
 };
 
 

@@ -60,10 +60,6 @@ void Compiler::literal() {
 
 void Compiler::string() {
     StringObject *object = Allocator::makeStringObject(m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2));
-    if (!m_hasAllocated) {
-        m_hasAllocated = true;
-        m_objects = object;
-    }
     emitConstant(Value{object});
 }
 
@@ -228,8 +224,4 @@ void Compiler::emitBytes(uint8_t byte1, uint8_t byte2) {
 
 void Compiler::emitConstant(Value value) {
     currentChunk().writeConstant(value, m_previous.line);
-}
-
-Object *Compiler::objects() {
-    return m_objects;
 }

@@ -35,7 +35,7 @@ private:
 
     Value peek(int distance) const;
 public:
-    explicit VM(const Chunk &chunk, Object *objects);
+    explicit VM(const Chunk &chunk);
 
     void runtimeError(const std::string &message);
 
