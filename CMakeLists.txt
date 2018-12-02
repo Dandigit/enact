@@ -15,4 +15,4 @@ add_executable(
         src/h/Chunk.h
         src/VM.cpp
         src/h/VM.h
-        src/h/Compiler.h src/Compiler.cpp src/h/Value.h src/Value.cpp src/h/Object.h src/Object.cpp src/Environment.cpp src/h/Environment.h src/Allocator.cpp src/h/Allocator.h)
+        src/h/Compiler.h src/Compiler.cpp src/h/Value.h src/Value.cpp src/h/Object.h src/Object.cpp src/Environment.cpp src/h/Environment.h src/Allocator.cpp src/h/Allocator.h src/ast/Expr.h src/ast/Stmt.h)
