@@ -286,20 +286,20 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.matilda">
+  <component name="RunManager" selected="Application.enact">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="matilda" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="matilda" TARGET_NAME="matilda" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="matilda" RUN_TARGET_NAME="matilda">
+    <configuration name="enact" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="enact" TARGET_NAME="enact" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="enact" RUN_TARGET_NAME="enact">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.Build All" />
-      <item itemvalue="Application.matilda" />
+      <item itemvalue="Application.enact" />
     </list>
   </component>
   <component name="SvnConfiguration">
