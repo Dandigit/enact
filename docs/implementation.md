@@ -1,4 +1,4 @@
-# Matilda
+# Enact
 ## Planned interpreter structure
 
 Mainly I'm just writing this down for myself, however potential contributors may find this interesting as well.
