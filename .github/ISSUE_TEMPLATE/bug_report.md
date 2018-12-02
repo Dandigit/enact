@@ -17,7 +17,7 @@ A clear and concise description of what the bug is.
 A clear and concise description of what you expected to happen.
 
 **Output**
-Paste output from Matilda with the `-verbose` flag set.
+Paste output from Enact with the `-verbose` flag set.
 
 **Platform**
  - Enact version: [e.g. 0.1.1]
