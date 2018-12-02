@@ -39,7 +39,12 @@ namespace OpCode {
         NEGATE,
         NOT,
 
-        DEFINE_GLOBAL,
+        POP,
+
+        CALL,
+
+        DEFINE_GLOBAL_VARIABLE,
+        DEFINE_GLOBAL_CONSTANT,
         GET_GLOBAL,
         SET_GLOBAL,
 

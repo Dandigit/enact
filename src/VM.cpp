@@ -31,6 +31,7 @@ InterpretResult VM::execute() {
 #define READ_BYTE() ((*m_ip)[i++])
 #define READ_CONSTANT() ((*m_values)[READ_BYTE()])
 #define READ_CONSTANT_LONG() ((*m_values)[unshiftBytes(READ_BYTE(), READ_BYTE(), READ_BYTE())])
+
 #define BINARY_OP(op) \
     do { \
         if (!peek(0).isNumber() || !peek(1).isNumber()) { \
@@ -42,9 +43,18 @@ InterpretResult VM::execute() {
         push(Value{a op b}); \
     } while (false)
 
+#define DEFINE_VARIABLE(isConst) \
+    do { \
+        Value value = pop(); \
+        std::string name = pop().asObject()->asIdentifier()->asStdString(); \
+        m_globals.create(name, Variable{value, (isConst)}); \
+        push(value); \
+    } while (false)
+
     int i = 0;
     while (true) {
         m_currentInstruction = i;
+
 #ifdef DEBUG_TRACE_EXECUTION
         std::cout << "    ";
         for (int stackIndex = 0; stackIndex < m_stackTop; ++stackIndex) {
@@ -53,6 +63,7 @@ InterpretResult VM::execute() {
         DisassembledChunk disassembled = m_chunk->disassembleInstruction(i);
         std::cout << "\n" << disassembled.str;
 #endif
+
         switch (READ_BYTE()) {
             case OpCode::CONSTANT:
                 push(READ_CONSTANT());
@@ -120,19 +131,26 @@ InterpretResult VM::execute() {
             case OpCode::NOT:
                 push(Value{pop().isFalsey()});
                 break;
-            case OpCode::DEFINE_GLOBAL: {
-                Value value = pop();
-                std::string name = pop().asObject()->asIdentifier()->asStdString();
-                m_globals.create(name, value);
+            case OpCode::POP:
+                pop();
+                break;
+            case OpCode::CALL: {
+                const int arity = READ_BYTE();
+                std::cout << "Called a function.\n";
+                for (int arg = 1; arg <= arity; ++arg) {
+                    std::cout << "Arg " << arg << ": " << pop() << "\n";
+                }
                 break;
             }
+            case OpCode::DEFINE_GLOBAL_VARIABLE: DEFINE_VARIABLE(false); break;
+            case OpCode::DEFINE_GLOBAL_CONSTANT: DEFINE_VARIABLE(true); break;
             case OpCode::GET_GLOBAL: {
                 std::string name = pop().asObject()->asIdentifier()->asStdString();
                 if (!m_globals.contains(name)) {
                     runtimeError("Undefined variable '" + name + "'.");
                     return InterpretResult::RUNTIME_ERROR;
                 }
-                push(m_globals.find(name));
+                push(m_globals.find(name).value);
                 break;
             }
             case OpCode::SET_GLOBAL: {
@@ -166,6 +184,7 @@ InterpretResult VM::execute() {
 #undef READ_CONSTANT
 #undef READ_CONSTANT_LONG
 #undef BINARY_OP
+#undef DEFINE_VARIABLE
 }
 
 void VM::runtimeError(const std::string &message) {

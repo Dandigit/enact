@@ -2,7 +2,7 @@
 
 Environment::Environment(Environment *enclosing) : m_enclosing{enclosing} {}
 
-Value Environment::find(const std::string &name) {
+Variable Environment::find(const std::string &name) {
     return m_variables[name];
 }
 
@@ -17,7 +17,7 @@ bool Environment::contains(const std::string &name) {
 
 void Environment::set(const std::string &name, Value value) {
     if (m_variables.count(name) > 0) {
-        m_variables[name] = value;
+        m_variables[name].value = value;
     }
 
     if (m_enclosing && m_enclosing->contains(name)) {
@@ -25,6 +25,7 @@ void Environment::set(const std::string &name, Value value) {
     }
 }
 
-void Environment::create(const std::string &name, Value value) {
-    m_variables.insert(std::make_pair(name, value));
+void Environment::create(const std::string &name, Variable variable) {
+    if (m_variables.count(name) > 0) m_variables[name] = variable;
+    else m_variables.insert(std::make_pair(name, variable));
 }

@@ -41,7 +41,7 @@ void Compiler::grouping() {
 void Compiler::variable() {
     IdentifierObject *name = Allocator::makeIdentifierObject(m_previous.lexeme);
     emitConstant(Value{name});
-    emitByte(OpCode::GET_GLOBAL);
+    if (!(check(TokenType::COLON_EQUAL) || check(TokenType::COLON_COLON_EQUAL) || check(TokenType::EQUAL))) emitByte(OpCode::GET_GLOBAL);
 }
 
 void Compiler::number() {
@@ -56,6 +56,23 @@ void Compiler::literal() {
         case TokenType::NIL: emitByte(OpCode::NIL); break;
         default: break; // Unreachable
     }
+}
+
+void Compiler::call() {
+    Token leftParen = m_previous;
+    uint8_t arity = 0;
+
+    while (!match(TokenType::RIGHT_PAREN)) {
+        expression();
+        ++arity;
+        if (!check(TokenType::RIGHT_PAREN))
+            consume(TokenType::COMMA, "Expected ',' before next argument");
+    }
+
+    if (arity > UINT8_MAX) errorAt(leftParen, "Too many arguments. Max is 255.");
+
+    emitByte(OpCode::CALL);
+    emitByte(arity);
 }
 
 void Compiler::string() {
@@ -81,6 +98,8 @@ void Compiler::binary() {
     parsePrecedence(rule.precedence);
 
     switch (operatorType) {
+        case TokenType::COLON_EQUAL: emitByte(OpCode::DEFINE_GLOBAL_VARIABLE); break;
+        case TokenType::COLON_COLON_EQUAL: emitByte(OpCode::DEFINE_GLOBAL_CONSTANT); break;
         case TokenType::EQUAL: emitByte(OpCode::SET_GLOBAL); break;
         case TokenType::EQUAL_EQUAL: emitByte(OpCode::EQUAL); break;
         case TokenType::BANG_EQUAL: emitBytes(OpCode::EQUAL, OpCode::NOT); break;
@@ -103,11 +122,11 @@ void Compiler::ternary() {
 }
 
 void Compiler::declaration() {
-    if (match(TokenType::VAR)) variableDeclaration();
-    else statement();
+    //if (match(TokenType::VAR)) variableDeclaration();
+    statement();
 }
 
-void Compiler::variableDeclaration() {
+/*void Compiler::variableDeclaration() {
     consume(TokenType::IDENTIFIER, "Expected variable name.");
     Token name = m_previous;
 
@@ -119,7 +138,7 @@ void Compiler::variableDeclaration() {
     expression();
 
     emitByte(OpCode::DEFINE_GLOBAL);
-}
+}*/
 
 void Compiler::statement() {
     if (match(TokenType::PRINT)) printStatement();
@@ -135,6 +154,7 @@ void Compiler::printStatement() {
 
 void Compiler::expressionStatement() {
     expression();
+    emitByte(OpCode::POP);
     consume(TokenType::SEMICOLON, "Expected ';' after expression.");
 }
 

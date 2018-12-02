@@ -22,7 +22,6 @@ Token Scanner::scanToken() {
         case ')': --m_openParen; return makeToken(TokenType::RIGHT_PAREN);
         case '[': ++m_openSquare; return makeToken(TokenType::LEFT_SQUARE);
         case ']': --m_openSquare; return makeToken(TokenType::RIGHT_SQUARE);
-        case ':': return makeToken(TokenType::COLON);
         case ',': return makeToken(TokenType::COMMA);
         case '.': return makeToken(TokenType::DOT);
         case '-': return makeToken(TokenType::MINUS);
@@ -41,6 +40,21 @@ Token Scanner::scanToken() {
             return makeToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
         case '<':
             return makeToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+
+            // 1 or 2 or 3 character tokens
+        case ':':
+            if (peek() == ':' && peekNext() == '=') {
+                advance();
+                advance();
+                return makeToken(TokenType::COLON_COLON_EQUAL);
+            }
+
+            if (match('=')) {
+                return makeToken(TokenType::COLON_EQUAL);
+            }
+
+            return makeToken(TokenType::COLON);
+
 
         case '"':
             return string();

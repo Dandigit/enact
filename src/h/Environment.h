@@ -5,16 +5,21 @@
 
 #include <unordered_map>
 
+struct Variable {
+    Value value;
+    bool isConst;
+};
+
 class Environment {
 private:
     Environment *m_enclosing;
-    std::unordered_map<std::string, Value> m_variables;
+    std::unordered_map<std::string, Variable> m_variables;
 public:
-    Environment(Environment* enclosing);
-    Value find(const std::string &name);
+    explicit Environment(Environment* enclosing);
+    Variable find(const std::string &name);
     bool contains(const std::string &name);
     void set(const std::string &name, Value value);
-    void create(const std::string &name, Value value);
+    void create(const std::string &name, Variable variable);
 };
 
 
