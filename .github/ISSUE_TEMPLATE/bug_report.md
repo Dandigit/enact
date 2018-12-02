@@ -20,7 +20,7 @@ A clear and concise description of what you expected to happen.
 Paste output from Matilda with the `-verbose` flag set.
 
 **Platform**
- - Matilda version: [e.g. 0.1.1]
+ - Enact version: [e.g. 0.1.1]
  - OS [e.g. Ubuntu Linux, Windows]
 
 **Additional context**
