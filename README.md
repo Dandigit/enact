@@ -25,5 +25,6 @@ end
 ```
 
 ## Goals
-Enact is designed to make programming easier through high-level but high-performance constructs to deal with **data**. Be it 
-selection of data, iteration of data, or sorting of data, Enact will let you manipulate data easily. 
+- Enact aims to make dealing with data easier through a variety of high-level but high-performance constructs.
+- It should be powerful, but shouldn't have a giant learning curve.
+- Code should be logical and pretty, not hacky and weird.
