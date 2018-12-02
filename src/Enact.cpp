@@ -8,12 +8,12 @@
 
 #include "h/Chunk.h"
 #include "h/Compiler.h"
-#include "h/Matilda.h"
+#include "h/Enact.h"
 #include "h/VM.h"
 
-VM Matilda::m_vm{};
+VM Enact::m_vm{};
 
-InterpretResult Matilda::run(const std::string &source) {
+InterpretResult Enact::run(const std::string &source) {
     Compiler compiler{source};
     if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
     std::cout << compiler.currentChunk().disassemble();
@@ -21,7 +21,7 @@ InterpretResult Matilda::run(const std::string &source) {
     return m_vm.run(compiler.currentChunk());
 }
 
-void Matilda::runFile(const std::string &path) {
+void Enact::runFile(const std::string &path) {
     // Get the file contents.
     std::ifstream file{path};
 
@@ -44,9 +44,9 @@ void Matilda::runFile(const std::string &path) {
     if (result == InterpretResult::RUNTIME_ERROR) exit((int)ExitCode::RUNTIME_ERROR);
 }
 
-void Matilda::runPrompt() {
+void Enact::runPrompt() {
     while (true) {
-        std::cout << "matilda > ";
+        std::cout << "enact > ";
 
         std::string input;
         std::getline(std::cin, input);
@@ -55,9 +55,9 @@ void Matilda::runPrompt() {
     }
 }
 
-void Matilda::start(int argc, char *argv[]) {
+void Enact::start(int argc, char *argv[]) {
     if (argc > 2) {
-        std::cerr << "Usage: matilda [file]\n";
+        std::cerr << "Usage: enact [file]\n";
         std::exit((int)ExitCode::INVALID_ARGUMENTS);
     } else if (argc == 2) {
         // Run the provided file.
@@ -69,7 +69,7 @@ void Matilda::start(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-    Matilda::start(argc, argv);
+    Enact::start(argc, argv);
     Allocator::freeAll();
 
     return 0;

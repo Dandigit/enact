@@ -12,7 +12,7 @@ enum class ExitCode {
     RUNTIME_ERROR = 77,
 };
 
-class Matilda {
+class Enact {
     static VM m_vm;
 public:
     static InterpretResult run(const std::string &source);

@@ -1,7 +1,6 @@
 #include <sstream>
 
 #include "h/Scanner.h"
-#include "h/Matilda.h"
 
 Scanner::Scanner(std::string source) : m_source{std::move(source)} {}
 
