@@ -5,6 +5,7 @@
 #include "../h/Value.h"
 
 #include <memory>
+#include <vector>
 
 class Expr {
 public:
@@ -27,6 +28,8 @@ public:
         virtual R visitUnaryExpr(Unary expr);
         virtual R visitVariableExpr(Variable expr);
     };
+
+    virtual std::string accept(Expr::Visitor<std::string> *visitor) = 0;
 };
 
 class Expr::Assign : public Expr {
@@ -36,9 +39,8 @@ public:
 
     Assign(std::shared_ptr<Expr> left, std::shared_ptr<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitAssignExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitAssignExpr(*this);
     }
 };
 
@@ -49,9 +51,8 @@ public:
 
     Binary(std::shared_ptr<Expr> left, std::shared_ptr<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitBinaryExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitBinaryExpr(*this);
     }
 };
 
@@ -63,9 +64,8 @@ public:
 
     Call(std::shared_ptr<Expr> callee, std::vector<std::shared_ptr<Expr>> arguments, Token paren) : callee{callee}, arguments{std::move(arguments)}, paren{std::move(paren)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitCallExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitCallExpr(*this);
     }
 };
 
@@ -76,9 +76,8 @@ public:
 
     Literal(Value value) : value{value} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitLiteralExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitLiteralExpr(*this);
     }
 };
 
@@ -91,9 +90,8 @@ public:
 
     Ternary(std::shared_ptr<Expr> condition, std::shared_ptr<Expr> thenExpr, std::shared_ptr<Expr> elseExpr, Token oper) : condition{condition}, thenExpr{thenExpr}, elseExpr{elseExpr}, oper{std::move(oper)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitTernaryExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitTernaryExpr(*this);
     }
 };
 
@@ -104,9 +102,8 @@ public:
 
     Unary(std::shared_ptr<Expr> operand, Token oper) : operand{operand}, oper{std::move(oper)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitUnaryExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) {
+        return visitor->visitUnaryExpr(*this);
     }
 };
 
@@ -116,9 +113,8 @@ public:
 
     explicit Variable(Token name) : name{std::move(name)} {}
 
-    template <typename R>
-    inline R accept(Expr::Visitor<R> visitor) {
-        return visitor.visitVariableExpr(this);
+    inline std::string accept(Expr::Visitor<std::string> *visitor) {
+        return visitor->visitVariableExpr(*this);
     }
 };
 
