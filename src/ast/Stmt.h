@@ -16,6 +16,8 @@ public:
         virtual R visitPrintStmt(Print stmt);
         virtual R visitVariableStmt(Variable stmt);
     };
+
+    virtual std::string accept(Stmt::Visitor<std::string> *visitor);
 };
 
 class Stmt::Expression : public Stmt {
@@ -24,9 +26,8 @@ public:
 
     Expression(Expr expr) : expr{expr} {}
 
-    template <typename R>
-    inline R accept(Stmt::Visitor<R> visitor) {
-        return visitor.visitExpressionStmt(this);
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+        return visitor->visitExpressionStmt(*this);
     }
 };
 
@@ -36,9 +37,8 @@ public:
 
     Print(Expr expr) : expr{expr} {}
 
-    template <typename R>
-    inline R accept(Stmt::Visitor<R> visitor) {
-        return visitor.visitPrintStmt(this);
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+        return visitor->visitPrintStmt(*this);
     }
 };
 
@@ -49,9 +49,8 @@ public:
 
     Variable(Token name, Expr initializer) : name{name}, initializer{initializer} {}
 
-    template <typename R>
-    inline R accept(Stmt::Visitor<R> visitor) {
-        return visitor.visitVariableStmt(this);
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+        return visitor->visitVariableStmt(*this);
     }
 };
 
