@@ -14,8 +14,8 @@ add_executable( enact
         src/h/Chunk.h
         src/VM.cpp
         src/h/VM.h
-        src/h/Compiler.h
-        src/Compiler.cpp
+        src/h/Parser.h
+        src/Parser.cpp
         src/h/Value.h
         src/Value.cpp
         src/h/Object.h 

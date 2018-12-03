@@ -1,5 +1,5 @@
-#ifndef MATILDA_SCANNER_H
-#define MATILDA_SCANNER_H
+#ifndef ENACT_SCANNER_H
+#define ENACT_SCANNER_H
 
 #include <string>
 
@@ -50,4 +50,4 @@ public:
 };
 
 
-#endif //MATILDA_SCANNER_H
+#endif //ENACT_SCANNER_H

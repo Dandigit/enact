@@ -1,5 +1,5 @@
-#ifndef MATILDA_OBJECT_H
-#define MATILDA_OBJECT_H
+#ifndef ENACT_OBJECT_H
+#define ENACT_OBJECT_H
 
 #include <iostream>
 #include <string>
@@ -48,4 +48,4 @@ public:
     const std::string& asStdString() const;
 };
 
-#endif //MATILDA_OBJECT_H
+#endif //ENACT_OBJECT_H

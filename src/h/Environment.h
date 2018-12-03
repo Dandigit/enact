@@ -1,5 +1,5 @@
-#ifndef MATILDA_ENVIRONMENT_H
-#define MATILDA_ENVIRONMENT_H
+#ifndef ENACT_ENVIRONMENT_H
+#define ENACT_ENVIRONMENT_H
 
 #include "Value.h"
 
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //MATILDA_ENVIRONMENT_H
+#endif //ENACT_ENVIRONMENT_H
