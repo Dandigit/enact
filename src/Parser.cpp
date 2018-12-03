@@ -120,6 +120,8 @@ std::shared_ptr<Stmt> Parser::variableDeclaration(bool isConst) {
 
     std::shared_ptr<Expr> initializer = expression();
 
+    consume(TokenType::SEMICOLON, "Expected ';' after variable declaration.");
+
     return std::make_shared<Stmt::Variable>(name, initializer, isConst);
 }
 

@@ -17,7 +17,7 @@ public:
         virtual R visitVariableStmt(Variable stmt);
     };
 
-    virtual std::string accept(Stmt::Visitor<std::string> *visitor);
+    virtual std::string accept(Stmt::Visitor<std::string> *visitor) = 0;
 };
 
 class Stmt::Expression : public Stmt {
@@ -26,7 +26,7 @@ public:
 
     Expression(std::shared_ptr<Expr> expr) : expr{expr} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitExpressionStmt(*this);
     }
 };
@@ -37,7 +37,7 @@ public:
 
     Print(std::shared_ptr<Expr> expr) : expr{expr} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitPrintStmt(*this);
     }
 };
@@ -50,7 +50,7 @@ public:
 
     Variable(Token name, std::shared_ptr<Expr> initializer, bool isConst) : name{std::move(name)}, initializer{initializer}, isConst{isConst} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) {
+    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitVariableStmt(*this);
     }
 };

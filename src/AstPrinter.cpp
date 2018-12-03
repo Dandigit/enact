@@ -1,38 +1,53 @@
+#include <sstream>
 #include "h/AstPrinter.h"
 
-std::string AstPrinter::print(std::shared_ptr<Stmt> stmt) {
-    return stmt->accept(this);
+void AstPrinter::print(std::shared_ptr<Stmt> stmt) {
+    std::cout << stmt->accept(this);
+}
+
+std::string AstPrinter::evaluate(std::shared_ptr<Expr> expr) {
+    return expr->accept(this);
 }
 
 std::string AstPrinter::visitExpressionStmt(Stmt::Expression stmt) {
-    return "expression stmt";
+    return "Stmt:Expression " + evaluate(stmt.expr);
 }
 
 std::string AstPrinter::visitPrintStmt(Stmt::Print stmt) {
-    return "print stmt";
+    return "Stmt:Print " + evaluate(stmt.expr);
 }
 
 std::string AstPrinter::visitVariableStmt(Stmt::Variable stmt) {
-    return "var stmt";
+    return "Stmt:Var " + stmt.name.lexeme + " " + evaluate(stmt.initializer);
 }
 
 std::string AstPrinter::visitAssignExpr(Expr::Assign expr) {
-    return "";
+    return "(= " + evaluate(expr.left) + " " + evaluate(expr.right) + ")";
 }
 
 std::string AstPrinter::visitBinaryExpr(Expr::Binary expr) {
-    return "";
+    return "(" + expr.oper.lexeme + " " + evaluate(expr.left) + " " + evaluate(expr.right) + ")";
+}
+
+std::string AstPrinter::visitCallExpr(Expr::Call expr) {
+    return "(() " + evaluate(expr.callee) + ")";
 }
 
 std::string AstPrinter::visitLiteralExpr(Expr::Literal expr) {
-    return "";
+    std::stringstream s;
+    s << expr.value;
+    return s.str();
+}
+
+std::string AstPrinter::visitTernaryExpr(Expr::Ternary expr) {
+    return "(?: " + evaluate(expr.condition) + " " + evaluate(expr.thenExpr) + " " + evaluate(expr.elseExpr) + ")";
 }
 
 std::string AstPrinter::visitUnaryExpr(Expr::Unary expr) {
-    return "";
+    return "(" + expr.oper.lexeme + " " + evaluate(expr.operand) + ")";
 }
 
 std::string AstPrinter::visitVariableExpr(Expr::Variable expr) {
-    return "";
+    return "(var " + expr.name.lexeme + ")";
 }
 

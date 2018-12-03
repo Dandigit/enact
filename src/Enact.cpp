@@ -10,6 +10,7 @@
 #include "h/Parser.h"
 #include "h/Enact.h"
 #include "h/VM.h"
+#include "h/AstPrinter.h"
 
 VM Enact::m_vm{};
 
@@ -19,6 +20,12 @@ InterpretResult Enact::run(const std::string &source) {
     //std::cout << compiler.currentChunk().disassemble();
     std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
     if (parser.hadError()) return InterpretResult::STATIC_ERROR;
+
+    AstPrinter astPrinter;
+    for (const std::shared_ptr<Stmt>& stmt : statements) {
+        astPrinter.print(stmt);
+        std::cout << "\n";
+    }
 
     //return m_vm.run(compiler.currentChunk());
     return InterpretResult::OK;
