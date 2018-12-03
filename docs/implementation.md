@@ -6,10 +6,10 @@ Matilda is first and foremost an interpreted language, with the possibility of a
 source (`.en` files) down to a high level bytecode and runs this bytecode on a virtual machine.
 
 Enact has a planned 5 pass interpreter:
-- First, the source is parsed and converted into an AST.
-- Next, the AST is walked to resolve variables and check types.
-- Afterwards, the AST is walked again and compiled down to bytecode.
-- This bytecode is optimized by yet another pass.
-- Finally, the VM takes the bytecode and runs it.
+- First, the source is parsed and converted into an AST. \[implemented ✔️\]
+- Next, the AST is walked to resolve variables and check types. \[not implemented ❌\]
+- Afterwards, the AST is walked again and compiled down to bytecode. \[not implemented ❌\]
+- This bytecode is optimized by yet another pass. \[not implemented ❌\]
+- Finally, the VM takes the bytecode and runs it. \[implemented ✔️\]
 
 Currently, only 2 of these 5 passes exist. The source code is parsed and converted straight into bytecode.
