@@ -53,11 +53,7 @@ private:
     bool match(TokenType expected);
     void consume(TokenType type, const std::string &message);
     bool isAtEnd();
-
-    void emitByte(uint8_t byte);
-    void emitBytes(uint8_t byte1, uint8_t byte2);
-    void emitConstant(Value value);
-
+    
     void errorAt(const Token &token, const std::string &message);
     void errorAtCurrent(const std::string &message);
     void error(const std::string &message);
