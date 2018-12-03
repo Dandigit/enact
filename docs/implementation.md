@@ -12,4 +12,5 @@ Enact has a planned 5 pass interpreter:
 - This bytecode is optimized by yet another pass. \[not implemented ❌\]
 - Finally, the VM takes the bytecode and runs it. \[implemented ✔️\]
 
-Currently, only 2 of these 5 passes exist. The source code is parsed and converted straight into bytecode.
+Currently, only 2 of these 5 passes exist. The source code is parsed and converted into an AST, but not compiled so that the VM
+may run it.
