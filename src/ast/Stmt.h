@@ -1,5 +1,5 @@
-#ifndef MATILDA_STMT_H
-#define MATILDA_STMT_H
+#ifndef ENACT_STMT_H
+#define ENACT_STMT_H
 
 #include "Expr.h"
 
@@ -20,9 +20,9 @@ public:
 
 class Stmt::Expression : public Stmt {
 public:
-    Expr expr;
+    std::shared_ptr<Expr> expr;
 
-    Expression(Expr expr) : expr{expr} {}
+    Expression(std::shared_ptr<Expr> expr) : expr{expr} {}
 
     template <typename R>
     inline R accept(Stmt::Visitor<R> visitor) {
@@ -32,9 +32,9 @@ public:
 
 class Stmt::Print : public Stmt {
 public:
-    Expr expr;
+    std::shared_ptr<Expr> expr;
 
-    Print(Expr expr) : expr{expr} {}
+    Print(std::shared_ptr<Expr> expr) : expr{expr} {}
 
     template <typename R>
     inline R accept(Stmt::Visitor<R> visitor) {
@@ -45,9 +45,10 @@ public:
 class Stmt::Variable : public Stmt {
 public:
     Token name;
-    Expr initializer;
+    std::shared_ptr<Expr> initializer;
+    bool isConst;
 
-    Variable(Token name, Expr initializer) : name{name}, initializer{initializer} {}
+    Variable(Token name, std::shared_ptr<Expr> initializer, bool isConst) : name{std::move(name)}, initializer{initializer}, isConst{isConst} {}
 
     template <typename R>
     inline R accept(Stmt::Visitor<R> visitor) {
@@ -55,4 +56,4 @@ public:
     }
 };
 
-#endif //MATILDA_STMT_H
+#endif //ENACT_STMT_H

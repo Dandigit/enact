@@ -1,5 +1,5 @@
-#ifndef MATILDA_TOKEN_H
-#define MATILDA_TOKEN_H
+#ifndef ENACT_TOKEN_H
+#define ENACT_TOKEN_H
 
 #include "common.h"
 
@@ -42,4 +42,4 @@ struct Token {
 };
 
 
-#endif //MATILDA_TOKEN_H
+#endif //ENACT_TOKEN_H

@@ -7,18 +7,21 @@
 #include <sstream>
 
 #include "h/Chunk.h"
-#include "h/Compiler.h"
+#include "h/Parser.h"
 #include "h/Enact.h"
 #include "h/VM.h"
 
 VM Enact::m_vm{};
 
 InterpretResult Enact::run(const std::string &source) {
-    Compiler compiler{source};
-    if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
-    std::cout << compiler.currentChunk().disassemble();
+    Parser parser{source};
+    //if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
+    //std::cout << compiler.currentChunk().disassemble();
+    std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
+    if (parser.hadError()) return InterpretResult::STATIC_ERROR;
 
-    return m_vm.run(compiler.currentChunk());
+    //return m_vm.run(compiler.currentChunk());
+    return InterpretResult::OK;
 }
 
 void Enact::runFile(const std::string &path) {

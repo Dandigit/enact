@@ -1,5 +1,5 @@
-#ifndef MATILDA_VALUE_H
-#define MATILDA_VALUE_H
+#ifndef ENACT_VALUE_H
+#define ENACT_VALUE_H
 
 #include <iostream>
 
@@ -50,4 +50,4 @@ inline std::ostream& operator<<(std::ostream &stream, const Value &value) {
     return stream;
 }
 
-#endif //MATILDA_VALUE_H
+#endif //ENACT_VALUE_H
