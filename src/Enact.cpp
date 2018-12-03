@@ -37,6 +37,8 @@ void Enact::runFile(const std::string &path) {
     std::stringstream fileContents;
     std::string currentLine;
 
+    //
+
     while (std::getline(file, currentLine)) {
         fileContents << currentLine << "\n";
     }
