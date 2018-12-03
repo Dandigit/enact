@@ -1,9 +1,5 @@
-//
-// Created by dan on 9/11/18.
-//
-
-#ifndef MATILDA_CHUNK_H
-#define MATILDA_CHUNK_H
+#ifndef ENACT_CHUNK_H
+#define ENACT_CHUNK_H
 
 #include <cstdint>
 #include <unordered_map>
@@ -87,4 +83,4 @@ public:
 void writeShiftedIndex(std::vector<uint8_t> &data, index_t index);
 uint32_t unshiftBytes(uint8_t one, uint8_t two, uint8_t three);
 
-#endif //MATILDA_CHUNK_H
+#endif //ENACT_CHUNK_H

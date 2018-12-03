@@ -1,5 +1,5 @@
-#ifndef MATILDA_VM_H
-#define MATILDA_VM_H
+#ifndef ENACT_VM_H
+#define ENACT_VM_H
 
 #include "Chunk.h"
 #include "Environment.h"
@@ -44,4 +44,4 @@ public:
     Value pop();
 };
 
-#endif //MATILDA_VM_H
+#endif //ENACT_VM_H

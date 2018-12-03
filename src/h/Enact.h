@@ -1,5 +1,5 @@
-#ifndef MATILDA_MATILDA_H
-#define MATILDA_MATILDA_H
+#ifndef ENACT_ENACT_H
+#define ENACT_ENACT_H
 
 #include <string>
 #include "VM.h"
@@ -23,4 +23,4 @@ public:
 
 int main(int argc, char *argv[]);
 
-#endif //MATILDA_MATILDA_H
+#endif //ENACT_ENACT_H

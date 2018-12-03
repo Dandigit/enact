@@ -1,5 +1,5 @@
-#ifndef MATILDA_ALLOCATOR_H
-#define MATILDA_ALLOCATOR_H
+#ifndef ENACT_ALLOCATOR_H
+#define ENACT_ALLOCATOR_H
 
 #include "Object.h"
 
@@ -19,4 +19,4 @@ public:
     static Object* objects();
 };
 
-#endif //MATILDA_ALLOCATOR_H
+#endif //ENACT_ALLOCATOR_H

@@ -1,5 +1,5 @@
 #include "h/VM.h"
-#include "h/Compiler.h"
+#include "h/Parser.h"
 
 #define DEBUG_TRACE_EXECUTION
 
