@@ -19,6 +19,7 @@ fun main():
                 print("Buzz")
             else:
                 print(i)
+            end
         end
     end
 end
