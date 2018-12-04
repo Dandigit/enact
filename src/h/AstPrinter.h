@@ -11,13 +11,13 @@ class AstPrinter : private Stmt::Visitor<std::string>, private Expr::Visitor<std
     std::string visitPrintStmt(Stmt::Print stmt) override;
     std::string visitVariableStmt(Stmt::Variable stmt) override;
 
-    std::string visitAssignExpr(Expr::Assign expr);
-    std::string visitBinaryExpr(Expr::Binary expr);
-    std::string visitCallExpr(Expr::Call expr);
-    std::string visitLiteralExpr(Expr::Literal expr);
-    std::string visitTernaryExpr(Expr::Ternary expr);
-    std::string visitUnaryExpr(Expr::Unary expr);
-    std::string visitVariableExpr(Expr::Variable expr);
+    std::string visitAssignExpr(Expr::Assign expr) override;
+    std::string visitBinaryExpr(Expr::Binary expr) override;
+    std::string visitCallExpr(Expr::Call expr) override;
+    std::string visitLiteralExpr(Expr::Literal expr) override;
+    std::string visitTernaryExpr(Expr::Ternary expr) override;
+    std::string visitUnaryExpr(Expr::Unary expr) override;
+    std::string visitVariableExpr(Expr::Variable expr) override;
 
     std::string evaluate(std::shared_ptr<Expr> expr);
 public:
