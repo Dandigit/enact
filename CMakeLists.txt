@@ -19,9 +19,9 @@ add_executable( enact
         src/h/Value.h
         src/Value.cpp
         src/h/Object.h 
-        src/Object.cpp 
-        src/Environment.cpp 
-        src/h/Environment.h 
+        src/Object.cpp
+        src/Scope.cpp
+        src/h/Scope.h
         src/Allocator.cpp 
         src/h/Allocator.h 
         src/ast/Expr.h 

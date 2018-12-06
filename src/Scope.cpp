@@ -1,12 +1,12 @@
-#include "h/Environment.h"
+#include "h/Scope.h"
 
-Environment::Environment(Environment *enclosing) : m_enclosing{enclosing} {}
+Scope::Scope(Scope *enclosing) : m_enclosing{enclosing} {}
 
-Variable Environment::find(const std::string &name) {
+Variable Scope::find(const std::string &name) {
     return m_variables[name];
 }
 
-bool Environment::contains(const std::string &name) {
+bool Scope::contains(const std::string &name) {
     if (m_variables.count(name) > 0) {
         return true;
     }
@@ -15,7 +15,7 @@ bool Environment::contains(const std::string &name) {
     return false;
 }
 
-void Environment::set(const std::string &name, Value value) {
+void Scope::set(const std::string &name, Value value) {
     if (m_variables.count(name) > 0) {
         m_variables[name].value = value;
     }
@@ -25,7 +25,7 @@ void Environment::set(const std::string &name, Value value) {
     }
 }
 
-void Environment::create(const std::string &name, Variable variable) {
+void Scope::create(const std::string &name, Variable variable) {
     if (m_variables.count(name) > 0) m_variables[name] = variable;
     else m_variables.insert(std::make_pair(name, variable));
 }

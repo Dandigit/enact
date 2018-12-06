@@ -2,6 +2,7 @@
 #define ENACT_ENVIRONMENT_H
 
 #include "Value.h"
+#include "common.h"
 
 #include <unordered_map>
 
@@ -10,13 +11,13 @@ struct Variable {
     bool isConst;
 };
 
-class Environment {
+class Scope {
 private:
-    Environment *m_enclosing;
-    std::unordered_map<std::string, Variable> m_variables;
+    Scope *m_enclosing;
+    std::unordered_map<std::string, index_t> m_indexes;
 public:
-    explicit Environment(Environment* enclosing);
-    Variable find(const std::string &name);
+    explicit Scope(Scope* enclosing);
+    index_t getIndex(const std::string &name);
     bool contains(const std::string &name);
     void set(const std::string &name, Value value);
     void create(const std::string &name, Variable variable);

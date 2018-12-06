@@ -2,7 +2,7 @@
 #define ENACT_VM_H
 
 #include "Chunk.h"
-#include "Environment.h"
+#include "Scope.h"
 #include "Value.h"
 
 #define MAX_PUSHES_PER_INSTRUCTION 1
@@ -23,7 +23,7 @@ private:
     const std::vector<uint8_t> *m_ip;
     const std::vector<Value> *m_values;
 
-    Environment m_globals;
+    Scope m_globals;
 
     index_t m_currentInstruction;
 
