@@ -14,7 +14,7 @@ struct Variable {
 class Scope {
 private:
     Scope *m_enclosing;
-    std::unordered_map<std::string, index_t> m_indexes; // temp
+    std::unordered_map<std::string, index_t> m_indexes;
 public:
     explicit Scope(Scope* enclosing);
     index_t getIndex(const std::string &name);
