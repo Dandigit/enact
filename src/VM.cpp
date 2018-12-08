@@ -11,8 +11,7 @@ VM::VM() :
         m_chunk{ nullptr },
         m_stackTop{ 0 },
         m_ip{ nullptr },
-        m_values{ nullptr },
-        m_globals{ nullptr } {
+        m_values{ nullptr } {
 }
 
 InterpretResult VM::run(const Chunk &chunk) {
@@ -28,7 +27,7 @@ InterpretResult VM::run(const Chunk &chunk) {
 }
 
 InterpretResult VM::execute() {
-#define READ_BYTE() ((*m_ip)[i++])
+#define READ_BYTE() ((*m_ip)[m_currentInstruction++])
 #define READ_CONSTANT() ((*m_values)[READ_BYTE()])
 #define READ_CONSTANT_LONG() ((*m_values)[unshiftBytes(READ_BYTE(), READ_BYTE(), READ_BYTE())])
 
@@ -43,24 +42,14 @@ InterpretResult VM::execute() {
         push(Value{a op b}); \
     } while (false)
 
-#define DEFINE_VARIABLE(isConst) \
-    do { \
-        Value value = pop(); \
-        std::string name = pop().asObject()->asIdentifier()->asStdString(); \
-        m_globals.create(name, Variable{value, (isConst)}); \
-        push(value); \
-    } while (false)
-
-    int i = 0;
+    m_currentInstruction = 0;
     while (true) {
-        m_currentInstruction = i;
-
 #ifdef DEBUG_TRACE_EXECUTION
         std::cout << "    ";
         for (int stackIndex = 0; stackIndex < m_stackTop; ++stackIndex) {
             std::cout << "[" << m_stack[stackIndex] << "] ";
         }
-        DisassembledChunk disassembled = m_chunk->disassembleInstruction(i);
+        DisassembledChunk disassembled = m_chunk->disassembleInstruction(m_currentInstruction);
         std::cout << "\n" << disassembled.str;
 #endif
 
@@ -70,7 +59,6 @@ InterpretResult VM::execute() {
                 break;
             case OpCode::CONSTANT_LONG:
                 push(READ_CONSTANT_LONG());
-                i += 3;
                 break;
             case OpCode::TRUE: push(Value{true}); break;
             case OpCode::FALSE: push(Value{false}); break;
@@ -134,44 +122,6 @@ InterpretResult VM::execute() {
             case OpCode::POP:
                 pop();
                 break;
-            case OpCode::CALL: {
-                const int arity = READ_BYTE();
-                std::cout << "Called a function.\n";
-                for (int arg = 1; arg <= arity; ++arg) {
-                    std::cout << "Arg " << arg << ": " << pop() << "\n";
-                }
-                break;
-            }
-            case OpCode::DEFINE_GLOBAL_VARIABLE: DEFINE_VARIABLE(false); break;
-            case OpCode::DEFINE_GLOBAL_CONSTANT: DEFINE_VARIABLE(true); break;
-            case OpCode::GET_GLOBAL: {
-                std::string name = pop().asObject()->asIdentifier()->asStdString();
-                if (!m_globals.contains(name)) {
-                    runtimeError("Undefined variable '" + name + "'.");
-                    return InterpretResult::RUNTIME_ERROR;
-                }
-                push(m_globals.find(name).value);
-                break;
-            }
-            case OpCode::SET_GLOBAL: {
-                Value value = pop();
-
-                if (!peek(0).isObject() || !peek(0).asObject()->isIdentifier()) {
-                    runtimeError("Invalid assignment target.");
-                    return InterpretResult::RUNTIME_ERROR;
-                }
-
-                std::string name = pop().asObject()->asIdentifier()->asStdString();
-
-                if (!m_globals.contains(name)) {
-                    runtimeError("Undefined variable '" + name + "'.");
-                    return InterpretResult::RUNTIME_ERROR;
-                }
-
-                m_globals.set(name, value);
-                push(value);
-                break;
-            }
             case OpCode::PRINT:
                 std::cout << pop() << "\n";
                 break;
@@ -184,7 +134,6 @@ InterpretResult VM::execute() {
 #undef READ_CONSTANT
 #undef READ_CONSTANT_LONG
 #undef BINARY_OP
-#undef DEFINE_VARIABLE
 }
 
 void VM::runtimeError(const std::string &message) {

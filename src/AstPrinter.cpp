@@ -1,11 +1,11 @@
 #include <sstream>
 #include "h/AstPrinter.h"
 
-void AstPrinter::print(std::shared_ptr<Stmt> stmt) {
+void AstPrinter::print(Sp<Stmt> stmt) {
     std::cout << stmt->accept(this);
 }
 
-std::string AstPrinter::evaluate(std::shared_ptr<Expr> expr) {
+std::string AstPrinter::evaluate(Sp<Expr> expr) {
     return expr->accept(this);
 }
 

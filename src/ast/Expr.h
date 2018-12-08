@@ -34,10 +34,10 @@ public:
 
 class Expr::Assign : public Expr {
 public:
-    std::shared_ptr<Expr> left, right;
+    Sp<Expr> left, right;
     Token oper;
 
-    Assign(std::shared_ptr<Expr> left, std::shared_ptr<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
+    Assign(Sp<Expr> left, Sp<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitAssignExpr(*this);
@@ -46,10 +46,10 @@ public:
 
 class Expr::Binary : public Expr {
 public:
-    std::shared_ptr<Expr> left, right;
+    Sp<Expr> left, right;
     Token oper;
 
-    Binary(std::shared_ptr<Expr> left, std::shared_ptr<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
+    Binary(Sp<Expr> left, Sp<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitBinaryExpr(*this);
@@ -58,11 +58,11 @@ public:
 
 class Expr::Call : public Expr {
 public:
-    std::shared_ptr<Expr> callee;
-    std::vector<std::shared_ptr<Expr>> arguments;
+    Sp<Expr> callee;
+    std::vector<Sp<Expr>> arguments;
     Token paren;
 
-    Call(std::shared_ptr<Expr> callee, std::vector<std::shared_ptr<Expr>> arguments, Token paren) : callee{callee}, arguments{std::move(arguments)}, paren{std::move(paren)} {}
+    Call(Sp<Expr> callee, std::vector<Sp<Expr>> arguments, Token paren) : callee{callee}, arguments{std::move(arguments)}, paren{std::move(paren)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitCallExpr(*this);
@@ -83,12 +83,12 @@ public:
 
 class Expr::Ternary : public Expr {
 public:
-    std::shared_ptr<Expr> condition;
-    std::shared_ptr<Expr> thenExpr;
-    std::shared_ptr<Expr> elseExpr;
+    Sp<Expr> condition;
+    Sp<Expr> thenExpr;
+    Sp<Expr> elseExpr;
     Token oper;
 
-    Ternary(std::shared_ptr<Expr> condition, std::shared_ptr<Expr> thenExpr, std::shared_ptr<Expr> elseExpr, Token oper) : condition{condition}, thenExpr{thenExpr}, elseExpr{elseExpr}, oper{std::move(oper)} {}
+    Ternary(Sp<Expr> condition, Sp<Expr> thenExpr, Sp<Expr> elseExpr, Token oper) : condition{condition}, thenExpr{thenExpr}, elseExpr{elseExpr}, oper{std::move(oper)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitTernaryExpr(*this);
@@ -97,10 +97,10 @@ public:
 
 class Expr::Unary : public Expr {
 public:
-    std::shared_ptr<Expr> operand;
+    Sp<Expr> operand;
     Token oper;
 
-    Unary(std::shared_ptr<Expr> operand, Token oper) : operand{operand}, oper{std::move(oper)} {}
+    Unary(Sp<Expr> operand, Token oper) : operand{operand}, oper{std::move(oper)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) {
         return visitor->visitUnaryExpr(*this);

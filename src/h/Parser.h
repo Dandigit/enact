@@ -28,8 +28,8 @@ enum class Precedence {
 };
 
 class Parser;
-typedef std::shared_ptr<Expr> (Parser::*PrefixFn)();
-typedef std::shared_ptr<Expr> (Parser::*InfixFn)(std::shared_ptr<Expr>);
+typedef Sp<Expr> (Parser::*PrefixFn)();
+typedef Sp<Expr> (Parser::*InfixFn)(Sp<Expr>);
 
 struct ParseRule {
     PrefixFn prefix;
@@ -59,22 +59,22 @@ private:
     void error(const std::string &message);
 
     const ParseRule& getParseRule(TokenType type);
-    std::shared_ptr<Expr> parsePrecedence(Precedence precedence);
+    Sp<Expr> parsePrecedence(Precedence precedence);
 
-    std::shared_ptr<Expr> expression();
+    Sp<Expr> expression();
 
     // Prefix parse rules
-    std::shared_ptr<Expr> grouping();
-    std::shared_ptr<Expr> variable();
-    std::shared_ptr<Expr> number();
-    std::shared_ptr<Expr> literal();
-    std::shared_ptr<Expr> string();
-    std::shared_ptr<Expr> unary();
+    Sp<Expr> grouping();
+    Sp<Expr> variable();
+    Sp<Expr> number();
+    Sp<Expr> literal();
+    Sp<Expr> string();
+    Sp<Expr> unary();
 
     // Infix parse rules
-    std::shared_ptr<Expr> call(std::shared_ptr<Expr> callee);
-    std::shared_ptr<Expr> binary(std::shared_ptr<Expr> left);
-    std::shared_ptr<Expr> ternary(std::shared_ptr<Expr> condition);
+    Sp<Expr> call(Sp<Expr> callee);
+    Sp<Expr> binary(Sp<Expr> left);
+    Sp<Expr> ternary(Sp<Expr> condition);
 
     std::array<ParseRule, 47> m_parseRules = {
             ParseRule{&Parser::grouping,   &Parser::call,    Precedence::CALL}, // LEFT_PAREN
@@ -125,20 +125,20 @@ private:
             ParseRule{nullptr,               nullptr,            Precedence::NONE} // ENDFILE
     };
 
-    std::shared_ptr<Stmt> declaration();
+    Sp<Stmt> declaration();
 
     // Declaration types
-    std::shared_ptr<Stmt> variableDeclaration(bool isConst);
+    Sp<Stmt> variableDeclaration(bool isConst);
 
-    std::shared_ptr<Stmt> statement();
+    Sp<Stmt> statement();
 
     // Statement types
-    std::shared_ptr<Stmt> printStatement();
-    std::shared_ptr<Stmt> expressionStatement();
+    Sp<Stmt> printStatement();
+    Sp<Stmt> expressionStatement();
 
 public:
     explicit Parser(std::string source);
-    std::vector<std::shared_ptr<Stmt>> parse();
+    std::vector<Sp<Stmt>> parse();
     bool hadError();
 };
 

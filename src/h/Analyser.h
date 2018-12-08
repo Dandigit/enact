@@ -17,7 +17,7 @@ class Analyser : private Expr::Visitor<void>, private Stmt::Visitor<void> {
     void visitUnaryExpr(Expr::Unary expr) override;
     void visitVariableExpr(Expr::Variable expr) override;
 public:
-    void analyse(std::vector<std::shared_ptr<Stmt>> statements);
+    void analyse(std::vector<Sp<Stmt>> statements);
 };
 
 #endif //ENACT_ANALYSER_H

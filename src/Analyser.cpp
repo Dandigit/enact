@@ -1,6 +1,6 @@
 #include "h/Analyser.h"
 
-void Analyser::analyse(std::vector<std::shared_ptr<Stmt>> statements) {
+void Analyser::analyse(std::vector<Sp<Stmt>> statements) {
 
 }
 
