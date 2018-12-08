@@ -22,9 +22,9 @@ public:
 
 class Stmt::Expression : public Stmt {
 public:
-    std::shared_ptr<Expr> expr;
+    Sp<Expr> expr;
 
-    Expression(std::shared_ptr<Expr> expr) : expr{expr} {}
+    Expression(Sp<Expr> expr) : expr{expr} {}
 
     inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitExpressionStmt(*this);
@@ -33,9 +33,9 @@ public:
 
 class Stmt::Print : public Stmt {
 public:
-    std::shared_ptr<Expr> expr;
+    Sp<Expr> expr;
 
-    Print(std::shared_ptr<Expr> expr) : expr{expr} {}
+    Print(Sp<Expr> expr) : expr{expr} {}
 
     inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitPrintStmt(*this);
@@ -45,10 +45,10 @@ public:
 class Stmt::Variable : public Stmt {
 public:
     Token name;
-    std::shared_ptr<Expr> initializer;
+    Sp<Expr> initializer;
     bool isConst;
 
-    Variable(Token name, std::shared_ptr<Expr> initializer, bool isConst) : name{std::move(name)}, initializer{initializer}, isConst{isConst} {}
+    Variable(Token name, Sp<Expr> initializer, bool isConst) : name{std::move(name)}, initializer{initializer}, isConst{isConst} {}
 
     inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
         return visitor->visitVariableStmt(*this);

@@ -37,13 +37,6 @@ namespace OpCode {
 
         POP,
 
-        CALL,
-
-        DEFINE_GLOBAL_VARIABLE,
-        DEFINE_GLOBAL_CONSTANT,
-        GET_GLOBAL,
-        SET_GLOBAL,
-
         PRINT,
 
         RETURN,

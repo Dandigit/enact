@@ -19,9 +19,9 @@ class AstPrinter : private Stmt::Visitor<std::string>, private Expr::Visitor<std
     std::string visitUnaryExpr(Expr::Unary expr) override;
     std::string visitVariableExpr(Expr::Variable expr) override;
 
-    std::string evaluate(std::shared_ptr<Expr> expr);
+    std::string evaluate(Sp<Expr> expr);
 public:
-    void print(std::shared_ptr<Stmt> stmt);
+    void print(Sp<Stmt> stmt);
 };
 
 #endif //ENACT_ASTPRINTER_H
