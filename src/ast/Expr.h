@@ -30,6 +30,7 @@ public:
     };
 
     virtual std::string accept(Expr::Visitor<std::string> *visitor) = 0;
+    virtual void accept(Expr::Visitor<void> *visitor) = 0;
 };
 
 class Expr::Assign : public Expr {
@@ -42,6 +43,10 @@ public:
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitAssignExpr(*this);
     }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
+        return visitor->visitAssignExpr(*this);
+    }
 };
 
 class Expr::Binary : public Expr {
@@ -52,6 +57,10 @@ public:
     Binary(Sp<Expr> left, Sp<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitBinaryExpr(*this);
+    }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
         return visitor->visitBinaryExpr(*this);
     }
 };
@@ -67,6 +76,10 @@ public:
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitCallExpr(*this);
     }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
+        return visitor->visitCallExpr(*this);
+    }
 };
 
 
@@ -77,6 +90,10 @@ public:
     Literal(Value value) : value{value} {}
 
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitLiteralExpr(*this);
+    }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
         return visitor->visitLiteralExpr(*this);
     }
 };
@@ -93,6 +110,10 @@ public:
     inline std::string accept(Expr::Visitor<std::string> *visitor) override {
         return visitor->visitTernaryExpr(*this);
     }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
+        return visitor->visitTernaryExpr(*this);
+    }
 };
 
 class Expr::Unary : public Expr {
@@ -102,7 +123,11 @@ public:
 
     Unary(Sp<Expr> operand, Token oper) : operand{operand}, oper{std::move(oper)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) {
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitUnaryExpr(*this);
+    }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
         return visitor->visitUnaryExpr(*this);
     }
 };
@@ -113,7 +138,11 @@ public:
 
     explicit Variable(Token name) : name{std::move(name)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) {
+    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
+        return visitor->visitVariableExpr(*this);
+    }
+
+    inline void accept(Expr::Visitor<void> *visitor) override {
         return visitor->visitVariableExpr(*this);
     }
 };
