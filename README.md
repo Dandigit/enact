@@ -8,18 +8,16 @@ established technologies and paradigms and just makes them <strong>nicer</strong
 ```
 // FizzBuzz in Enact
 
-fun main():
-    each i in 1..20:
-        given i % 3 == 0, i % 5 == 0:
-            when true, true:
-                print("FizzBuzz")
-            when true, false:
-                print("Fizz")
-            when false, true:
-                print("Buzz")
-            else:
-                print(i)
-        end
+each i in 1..20:
+    given i % 3 == 0, i % 5 == 0:
+        when true, true:
+            print("FizzBuzz")
+        when true, false:
+            print("Fizz")
+        when false, true:
+            print("Buzz")
+        else:
+            print(i)
     end
 end
 ```
