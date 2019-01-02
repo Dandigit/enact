@@ -12,14 +12,12 @@
 #include "h/VM.h"
 #include "h/AstPrinter.h"
 
-VM Enact::m_vm{};
-
-InterpretResult Enact::run(const std::string &source) {
+void Enact::run(const std::string &source) {
     Parser parser{source};
     //if (!compiler.compile()) return InterpretResult::COMPILE_ERROR;
     //std::cout << compiler.currentChunk().disassemble();
     std::vector<Sp<Stmt>> statements = parser.parse();
-    if (parser.hadError()) return InterpretResult::STATIC_ERROR;
+    if (parser.hadError()) return;
 
     AstPrinter astPrinter;
     for (const Sp<Stmt>& stmt : statements) {
@@ -28,7 +26,6 @@ InterpretResult Enact::run(const std::string &source) {
     }
 
     //return m_vm.run(compiler.currentChunk());
-    return InterpretResult::OK;
 }
 
 void Enact::runFile(const std::string &path) {
@@ -38,7 +35,7 @@ void Enact::runFile(const std::string &path) {
     // Check that the file opened successfully
     if (!file.is_open()) {
         std::cerr << "Error: Unable to read file '" + path + "'.";
-        std::exit((int)ExitCode::FILE_ERROR);
+        std::exit((int) ExitCode::FILE_ERROR);
     }
 
     std::stringstream fileContents;
@@ -47,11 +44,6 @@ void Enact::runFile(const std::string &path) {
     while (std::getline(file, currentLine)) {
         fileContents << currentLine << "\n";
     }
-
-    InterpretResult result = run(fileContents.str());
-
-    if (result == InterpretResult::COMPILE_ERROR) exit((int)ExitCode::COMPILE_ERROR);
-    if (result == InterpretResult::RUNTIME_ERROR) exit((int)ExitCode::RUNTIME_ERROR);
 }
 
 void Enact::runPrompt() {
@@ -80,7 +72,6 @@ void Enact::start(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     Enact::start(argc, argv);
-    Allocator::freeAll();
 
     return 0;
 }

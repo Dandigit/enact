@@ -5,7 +5,6 @@
 #include <memory>
 #include <string>
 
-#include "Allocator.h"
 #include "Chunk.h"
 #include "Scanner.h"
 #include "Token.h"

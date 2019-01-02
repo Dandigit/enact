@@ -24,11 +24,23 @@ void Analyser::visitBinaryExpr(Expr::Binary expr) {
 
 }
 
+void Analyser::visitBooleanExpr(Expr::Boolean expr) {
+
+}
+
 void Analyser::visitCallExpr(Expr::Call expr) {
 
 }
 
-void Analyser::visitLiteralExpr(Expr::Literal expr) {
+void Analyser::visitNilExpr(Expr::Nil expr) {
+
+}
+
+void Analyser::visitNumberExpr(Expr::Number expr) {
+
+}
+
+void Analyser::visitStringExpr(Expr::String expr) {
 
 }
 

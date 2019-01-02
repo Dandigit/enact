@@ -11,8 +11,11 @@ class Expr {
 public:
     class Assign;
     class Binary;
+    class Boolean;
     class Call;
-    class Literal;
+    class Nil;
+    class Number;
+    class String;
     class Ternary;
     class Unary;
     class Variable;
@@ -22,16 +25,24 @@ public:
     public:
         virtual R visitAssignExpr(Assign expr);
         virtual R visitBinaryExpr(Binary expr);
+        virtual R visitBooleanExpr(Boolean expr);
         virtual R visitCallExpr(Call expr);
-        virtual R visitLiteralExpr(Literal expr);
+        virtual R visitNilExpr(Nil expr);
+        virtual R visitNumberExpr(Number expr);
+        virtual R visitStringExpr(String expr);
         virtual R visitTernaryExpr(Ternary expr);
         virtual R visitUnaryExpr(Unary expr);
         virtual R visitVariableExpr(Variable expr);
     };
 
-    virtual std::string accept(Expr::Visitor<std::string> *visitor) = 0;
     virtual void accept(Expr::Visitor<void> *visitor) = 0;
+    virtual std::string accept(Expr::Visitor<std::string> *visitor) = 0;
 };
+
+#define EXPR_ACCEPT_FUNCTION(T, name) \
+    T accept(Expr::Visitor<T> *visitor) override { \
+        return visitor->name(*this); \
+    }
 
 class Expr::Assign : public Expr {
 public:
@@ -40,13 +51,8 @@ public:
 
     Assign(Sp<Expr> left, Sp<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitAssignExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitAssignExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitAssignExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitAssignExpr);
 };
 
 class Expr::Binary : public Expr {
@@ -56,13 +62,18 @@ public:
 
     Binary(Sp<Expr> left, Sp<Expr> right, Token oper) : left{left}, right{right}, oper{std::move(oper)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitBinaryExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitBinaryExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitBinaryExpr);
+};
 
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitBinaryExpr(*this);
-    }
+class Expr::Boolean : public Expr {
+public:
+    bool value;
+
+    Boolean(bool value) : value{value} {}
+
+    EXPR_ACCEPT_FUNCTION(void, visitBooleanExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitBooleanExpr);
 };
 
 class Expr::Call : public Expr {
@@ -73,30 +84,38 @@ public:
 
     Call(Sp<Expr> callee, std::vector<Sp<Expr>> arguments, Token paren) : callee{callee}, arguments{std::move(arguments)}, paren{std::move(paren)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitCallExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitCallExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitCallExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitCallExpr);
 };
 
-
-class Expr::Literal : public Expr {
+class Expr::Nil : public Expr {
 public:
-    Value value;
+    Nil() = default;
 
-    Literal(Value value) : value{value} {}
-
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitLiteralExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitLiteralExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitNilExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitNilExpr);
 };
+
+class Expr::Number : public Expr {
+public:
+    double value;
+
+    Number(double value) : value{value} {}
+
+    EXPR_ACCEPT_FUNCTION(void, visitNumberExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitNumberExpr);
+};
+
+class Expr::String : public Expr {
+public:
+    std::string value;
+
+    String(std::string value) : value{std::move(value)} {}
+
+    EXPR_ACCEPT_FUNCTION(void, visitStringExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitStringExpr);
+};
+
 
 class Expr::Ternary : public Expr {
 public:
@@ -107,13 +126,8 @@ public:
 
     Ternary(Sp<Expr> condition, Sp<Expr> thenExpr, Sp<Expr> elseExpr, Token oper) : condition{condition}, thenExpr{thenExpr}, elseExpr{elseExpr}, oper{std::move(oper)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitTernaryExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitTernaryExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitTernaryExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitTernaryExpr);
 };
 
 class Expr::Unary : public Expr {
@@ -123,13 +137,8 @@ public:
 
     Unary(Sp<Expr> operand, Token oper) : operand{operand}, oper{std::move(oper)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitUnaryExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitUnaryExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitUnaryExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitUnaryExpr);
 };
 
 class Expr::Variable : public Expr {
@@ -138,13 +147,10 @@ public:
 
     explicit Variable(Token name) : name{std::move(name)} {}
 
-    inline std::string accept(Expr::Visitor<std::string> *visitor) override {
-        return visitor->visitVariableExpr(*this);
-    }
-
-    inline void accept(Expr::Visitor<void> *visitor) override {
-        return visitor->visitVariableExpr(*this);
-    }
+    EXPR_ACCEPT_FUNCTION(void, visitVariableExpr);
+    EXPR_ACCEPT_FUNCTION(std::string, visitVariableExpr);
 };
+
+#undef EXPR_ACCEPT_FUNCTION
 
 #endif //ENACT_EXPR_H

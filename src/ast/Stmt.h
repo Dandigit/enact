@@ -17,9 +17,14 @@ public:
         virtual R visitVariableStmt(Variable stmt);
     };
 
-    virtual std::string accept(Stmt::Visitor<std::string> *visitor) = 0;
     virtual void accept(Stmt::Visitor<void> *visitor) = 0;
+    virtual std::string accept(Stmt::Visitor<std::string> *visitor) = 0;
 };
+
+#define STMT_ACCEPT_FUNCTION(T, name) \
+    T accept(Stmt::Visitor<T> *visitor) override { \
+        return visitor->name(*this); \
+    }
 
 class Stmt::Expression : public Stmt {
 public:
@@ -27,13 +32,8 @@ public:
 
     Expression(Sp<Expr> expr) : expr{expr} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
-        return visitor->visitExpressionStmt(*this);
-    }
-
-    inline void accept(Stmt::Visitor<void> *visitor) override {
-        return visitor->visitExpressionStmt(*this);
-    }
+    STMT_ACCEPT_FUNCTION(void, visitExpressionStmt);
+    STMT_ACCEPT_FUNCTION(std::string, visitExpressionStmt);
 };
 
 class Stmt::Print : public Stmt {
@@ -42,13 +42,8 @@ public:
 
     Print(Sp<Expr> expr) : expr{expr} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
-        return visitor->visitPrintStmt(*this);
-    }
-
-    inline void accept(Stmt::Visitor<void> *visitor) override {
-        return visitor->visitPrintStmt(*this);
-    }
+    STMT_ACCEPT_FUNCTION(void, visitPrintStmt);
+    STMT_ACCEPT_FUNCTION(std::string, visitPrintStmt);
 };
 
 class Stmt::Variable : public Stmt {
@@ -59,13 +54,10 @@ public:
 
     Variable(Token name, Sp<Expr> initializer, bool isConst) : name{std::move(name)}, initializer{initializer}, isConst{isConst} {}
 
-    inline std::string accept(Stmt::Visitor<std::string> *visitor) override {
-        return visitor->visitVariableStmt(*this);
-    }
-
-    inline void accept(Stmt::Visitor<void> *visitor) override {
-        return visitor->visitVariableStmt(*this);
-    }
+    STMT_ACCEPT_FUNCTION(void, visitVariableStmt);
+    STMT_ACCEPT_FUNCTION(std::string, visitVariableStmt);
 };
+
+#undef STMT_ACCEPT_FUNCTION
 
 #endif //ENACT_STMT_H

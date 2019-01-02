@@ -13,8 +13,11 @@ class AstPrinter : private Stmt::Visitor<std::string>, private Expr::Visitor<std
 
     std::string visitAssignExpr(Expr::Assign expr) override;
     std::string visitBinaryExpr(Expr::Binary expr) override;
+    std::string visitBooleanExpr(Expr::Boolean expr) override;
     std::string visitCallExpr(Expr::Call expr) override;
-    std::string visitLiteralExpr(Expr::Literal expr) override;
+    std::string visitNilExpr(Expr::Nil expr) override;
+    std::string visitNumberExpr(Expr::Number expr) override;
+    std::string visitStringExpr(Expr::String expr) override;
     std::string visitTernaryExpr(Expr::Ternary expr) override;
     std::string visitUnaryExpr(Expr::Unary expr) override;
     std::string visitVariableExpr(Expr::Variable expr) override;

@@ -13,9 +13,8 @@ enum class ExitCode {
 };
 
 class Enact {
-    static VM m_vm;
 public:
-    static InterpretResult run(const std::string &source);
+    static void run(const std::string &source);
     static void runFile(const std::string &path);
     static void runPrompt();
     static void start(int argc, char *argv[]);

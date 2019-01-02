@@ -20,7 +20,5 @@ add_executable( enact
         src/Value.cpp
         src/h/Object.h 
         src/Object.cpp
-        src/Allocator.cpp
-        src/h/Allocator.h 
-        src/ast/Expr.h 
+        src/ast/Expr.h
         src/ast/Stmt.h src/AstPrinter.cpp src/h/AstPrinter.h src/Analyser.cpp src/h/Analyser.h)

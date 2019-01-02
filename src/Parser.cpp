@@ -43,20 +43,19 @@ Sp<Expr> Parser::variable() {
 
 Sp<Expr> Parser::number() {
     double value = std::stod(m_previous.lexeme);
-    return std::make_shared<Expr::Literal>(Value{value});
+    return std::make_shared<Expr::Number>(value);
 }
 
 Sp<Expr> Parser::literal() {
     switch (m_previous.type) {
-        case TokenType::TRUE: return std::make_shared<Expr::Literal>(Value{true});
-        case TokenType::FALSE: return std::make_shared<Expr::Literal>(Value{true});
-        case TokenType::NIL: return std::make_shared<Expr::Literal>(Value{});
+        case TokenType::TRUE: return std::make_shared<Expr::Boolean>(true);
+        case TokenType::FALSE: return std::make_shared<Expr::Boolean>(false);
+        case TokenType::NIL: return std::make_shared<Expr::Nil>();
     }
 }
 
 Sp<Expr> Parser::string() {
-    StringObject *object = Allocator::makeStringObject(m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2));
-    return std::make_shared<Expr::Literal>(Value{object});
+    return std::make_shared<Expr::String>(m_previous.lexeme.substr(1, m_previous.lexeme.size() - 2));
 }
 
 Sp<Expr> Parser::unary() {

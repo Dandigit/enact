@@ -11,8 +11,11 @@ class Analyser : private Expr::Visitor<void>, private Stmt::Visitor<void> {
 
     void visitAssignExpr(Expr::Assign expr) override;
     void visitBinaryExpr(Expr::Binary expr) override;
+    void visitBooleanExpr(Expr::Boolean expr) override;
     void visitCallExpr(Expr::Call expr) override;
-    void visitLiteralExpr(Expr::Literal expr) override;
+    void visitNilExpr(Expr::Nil expr) override;
+    void visitNumberExpr(Expr::Number expr) override;
+    void visitStringExpr(Expr::String expr) override;
     void visitTernaryExpr(Expr::Ternary expr) override;
     void visitUnaryExpr(Expr::Unary expr) override;
     void visitVariableExpr(Expr::Variable expr) override;

@@ -29,11 +29,25 @@ std::string AstPrinter::visitBinaryExpr(Expr::Binary expr) {
     return "(" + expr.oper.lexeme + " " + evaluate(expr.left) + " " + evaluate(expr.right) + ")";
 }
 
+std::string AstPrinter::visitBooleanExpr(Expr::Boolean expr) {
+    return (expr.value ? "true" : "false");
+}
+
 std::string AstPrinter::visitCallExpr(Expr::Call expr) {
     return "(() " + evaluate(expr.callee) + ")";
 }
 
-std::string AstPrinter::visitLiteralExpr(Expr::Literal expr) {
+std::string AstPrinter::visitNilExpr(Expr::Nil expr) {
+    return "nil";
+}
+
+std::string AstPrinter::visitNumberExpr(Expr::Number expr) {
+    std::stringstream s;
+    s << expr.value;
+    return s.str();
+}
+
+std::string AstPrinter::visitStringExpr(Expr::String expr) {
     std::stringstream s;
     s << expr.value;
     return s.str();
